@@ -16,6 +16,7 @@ Parameters:
 * port: bind port, default 69.
 * options: service option, default --secure.
 
+
     class tftp {
       directory => '/opt/tftp',
       address   => $::ipaddress,
@@ -33,6 +34,7 @@ Parameters:
 *  content: file content.
 *  source: file source.
 
+
     tftp::file { 'pxelinux.0':
       source => 'puppet:///modules/acme/pxelinux.0',
     }
@@ -49,6 +51,7 @@ Parameters:
 
 1. tftp directories not in the OS package defaults should be managed as file resources.
 2. customization for the class tftp must be declared before using tftp::file resources.
+
 
     file { '/opt/tftp':
       ensure => directory,
@@ -69,5 +72,5 @@ The examples use a module acme and the tftp files should be placed in calling mo
 
 The module have been tested on the following operating systems. Testing and patches for other platforms are welcomed.
 
-Debian Wheezy
-Ubuntu Oneiric
+* Debian Wheezy
+* Ubuntu Oneiric
