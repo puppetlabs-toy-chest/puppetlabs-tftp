@@ -16,6 +16,7 @@ Parameters:
 * port: bind port, default 69.
 * options: service option, default --secure.
 
+Example:
 
     class tftp {
       directory => '/opt/tftp',
@@ -34,6 +35,7 @@ Parameters:
 *  content: file content.
 *  source: file source.
 
+Example:
 
     tftp::file { 'pxelinux.0':
       source => 'puppet:///modules/acme/pxelinux.0',
@@ -52,6 +54,7 @@ Parameters:
 1. tftp directories not in the OS package defaults should be managed as file resources.
 2. customization for the class tftp must be declared before using tftp::file resources.
 
+Example:
 
     file { '/opt/tftp':
       ensure => directory,
