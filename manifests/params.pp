@@ -16,7 +16,8 @@ class tftp::params {
 
   case $::operatingsystem {
     'debian': {
-      # hasstatus is to get around an issue where the service script appears to be broken.
+      # hasstatus is to get around an issue where the service script appears to
+      # be broken.
       $directory = '/srv/tftp'
       $hasstatus = false
       $provider  = undef
@@ -27,7 +28,7 @@ class tftp::params {
       $provider  = 'upstart'
     }
     default: {
-      warning("tftp:: module not verified on operatingsystem ${::operatingsystem}.")
+      warning("tftp:: not verified on operatingsystem ${::operatingsystem}.")
       $directory = '/var/lib/tftpboot'
       $hasstatus = true
       $provider  = undef

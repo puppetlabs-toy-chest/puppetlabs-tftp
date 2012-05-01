@@ -1,4 +1,4 @@
-# puppet-tftp module
+# puppet tftp module
 
 ## Overview
 
