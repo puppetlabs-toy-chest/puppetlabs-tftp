@@ -15,13 +15,17 @@ Parameters:
 * address: bind address, default 0.0.0.0.
 * port: bind port, default 69.
 * options: service option, default --secure.
+* inetd: run service via inetd, default false. (Warning: this option when enabled to true is not compatible with custom service options).
+* inetd_conf: inetd.conf file path, default /etc/inetd.conf.
+
+Enabling inetd requires [puppetlabs-inetd](https://github.com/puppetlabs/puppetlabs-inetd) module.
 
 Example:
 
     class tftp {
       directory => '/opt/tftp',
       address   => $::ipaddress,
-      options   => '--secure --ipv6 --timeout 60',
+      options   => '--ipv6 --timeout 60',
     }
 
 ### tftp::file
