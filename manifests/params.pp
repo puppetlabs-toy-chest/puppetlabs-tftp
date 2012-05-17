@@ -9,10 +9,11 @@
 # Usage:
 #
 class tftp::params {
-  $address  = '0.0.0.0'
-  $port     = '69'
-  $username = 'tftp'
-  $options  = '--secure'
+  $address    = '0.0.0.0'
+  $port       = '69'
+  $username   = 'tftp'
+  $options    = '--secure'
+  $inetd_conf = '/etc/inetd.conf'
 
   case $::operatingsystem {
     'debian': {
