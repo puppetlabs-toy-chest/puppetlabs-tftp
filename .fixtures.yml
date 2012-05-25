@@ -1,0 +1,5 @@
+fixtures:
+  repositories:
+    "inetd": "git://github.com/puppetlabs/puppetlabs-inetd.git"
+  symlinks:
+    "tftp": "#{source_dir}"
