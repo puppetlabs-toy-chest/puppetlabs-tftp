@@ -10,6 +10,7 @@
 #
 define tftp::file (
   $ensure  = file,
+  $recurse = false,
   $owner   = 'tftp',
   $group   = 'tftp',
   $mode    = '0644',
@@ -20,6 +21,7 @@ define tftp::file (
 
   file { "${tftp::directory}/${name}":
     ensure  => $ensure,
+    recurse => $recurse,
     owner   => $owner,
     group   => $group,
     mode    => $mode,
