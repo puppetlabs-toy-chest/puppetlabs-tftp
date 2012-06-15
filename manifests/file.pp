@@ -11,6 +11,9 @@
 define tftp::file (
   $ensure  = file,
   $recurse = false,
+  $purge   = false,
+  $replace = true,
+  $recurselimit = false,
   $owner   = 'tftp',
   $group   = 'tftp',
   $mode    = '0644',
@@ -22,6 +25,9 @@ define tftp::file (
   file { "${tftp::directory}/${name}":
     ensure  => $ensure,
     recurse => $recurse,
+    purge   => $purge,
+    replace => $replace,
+    recurselimit => $recurselimit,
     owner   => $owner,
     group   => $group,
     mode    => $mode,
