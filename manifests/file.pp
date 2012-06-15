@@ -11,12 +11,12 @@
 define tftp::file (
   $ensure       = file,
   $recurse      = false,
-  $purge        = undef,
-  $replace      = undef,
-  $recurselimit = undef,
   $owner        = 'tftp',
   $group        = 'tftp',
   $mode         = '0644',
+  $purge        = undef,
+  $replace      = undef,
+  $recurselimit = undef,
   $content      = undef,
   $source       = undef
 ) {
@@ -25,12 +25,12 @@ define tftp::file (
   file { "${tftp::directory}/${name}":
     ensure       => $ensure,
     recurse      => $recurse,
-    purge        => $purge,
-    replace      => $replace,
-    recurselimit => $recurselimit,
     owner        => $owner,
     group        => $group,
     mode         => $mode,
+    purge        => $purge,
+    replace      => $replace,
+    recurselimit => $recurselimit,
     content      => $content,
     source       => $source,
     require      => Class['tftp'],
