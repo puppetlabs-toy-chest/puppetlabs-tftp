@@ -10,10 +10,11 @@ describe 'tftp::file' do
 
     it { should include_class('tftp') }
     it { should contain_file('/srv/tftp/sample').with({
-      'ensure' => 'file',
-      'owner'  => 'tftp',
-      'group'  => 'tftp',
-      'mode'   => '0644'
+      'ensure'  => 'file',
+      'recurse' => false,
+      'owner'   => 'tftp',
+      'group'   => 'tftp',
+      'mode'    => '0644'
     }) }
   end
 
@@ -23,27 +24,67 @@ describe 'tftp::file' do
 
     it { should include_class('tftp') }
     it { should contain_file('/var/lib/tftpboot/sample').with({
-      'ensure' => 'file',
-      'owner'  => 'tftp',
-      'group'  => 'tftp',
-      'mode'   => '0644'
+      'ensure'  => 'file',
+      'recurse' => false,
+      'owner'   => 'tftp',
+      'group'   => 'tftp',
+      'mode'    => '0644'
     }) }
   end
 
   describe 'when deploying with parameters' do
-    let(:params) { {:ensure => 'directory',
-                    :owner  => 'root',
-                    :group  => 'root',
-                    :mode   => '0755' }}
+    let(:params) { {:ensure  => 'directory',
+                    :recurse => true,
+                    :owner   => 'root',
+                    :group   => 'root',
+                    :mode    => '0755' }}
     let(:facts) { { :operatingsystem => 'Debian',
                     :path            => '/usr/local/bin:/usr/bin:/bin', } }
 
     it { should include_class('tftp') }
     it { should contain_file('/srv/tftp/sample').with({
-      'ensure' => 'directory',
-      'owner'  => 'root',
-      'group'  => 'root',
-      'mode'   => '0755'
+      'ensure'  => 'directory',
+      'recurse' => true,
+      'owner'   => 'root',
+      'group'   => 'root',
+      'mode'    => '0755'
+    }) }
+  end
+
+  describe 'when deploying without recurse parameters' do
+    let(:facts) { {:operatingsystem => 'Debian',
+                   :path            => '/usr/local/bin:/usr/bin:/bin', } }
+
+    it { should include_class('tftp') }
+    it { should contain_file('/srv/tftp/sample').with({
+      'ensure'       => 'file',
+      'recurse'      => false,
+      'purge'        => nil,
+      'replace'      => nil,
+      'recurselimit' => nil
+    }) }
+  end
+
+  describe 'when deploying with recurse parameters' do
+    let(:params) { {:ensure       => 'directory',
+                    :recurse      => true,
+                    :mode         => '0755',
+                    :recurselimit => 42,
+                    :purge        => true,
+                    :replace      => false }}
+    let(:facts) { {:operatingsystem => 'Debian',
+                   :path            => '/usr/local/bin:/usr/bin:/bin', }}
+
+    it { should include_class('tftp') }
+    it { should contain_file('/srv/tftp/sample').with({
+      'ensure'       => 'directory',
+      'recurse'      => true,
+      'owner'        => 'tftp',
+      'group'        => 'tftp',
+      'mode'         => '0755',
+      'recurselimit' => 42,
+      'purge'        => true,
+      'replace'      => false,
     }) }
   end
 end
