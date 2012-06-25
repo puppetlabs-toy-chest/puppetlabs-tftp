@@ -33,6 +33,7 @@ Example:
 Parameters:
 
 *  ensure: file type, default file.
+*  recurse: file recurse, default false.
 *  owner: file owner, default tftp.
 *  group: file group. default tftp.
 *  mode: file mode, default 0644 (puppet will change to 0755 for directories).
