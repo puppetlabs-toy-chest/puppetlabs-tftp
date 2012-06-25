@@ -1,13 +1,6 @@
 # Class: tftp::params
 #
-# Parameters:
-#
-# Actions:
-#
-# Requires:
-#
-# Usage:
-#
+#   TFTP class parameters.
 class tftp::params {
   $address    = '0.0.0.0'
   $port       = '69'
