@@ -2,11 +2,30 @@
 #
 # Parameters:
 #
+#   [*ensure*]: file type, default file.
+#   [*owner*]: file owner, default tftp.
+#   [*group*]: file group. default tftp.
+#   [*mode*]: file mode, default 0644 (puppet will change to 0755 for directories).
+#   [*content*]: file content.
+#   [*source*]: file source, defaults to puppet*]:///module/${caller_module_name}/${name} for files without content.
+#   [*recurse*]: directory recurse, default false.
+#   [*purge*]: directory recurse and purge.
+#   [*replace*]: replace directory with file or symlink, default undef,
+#   [*recurselimit*]: directory recurse limit, default undef,
+#
 # Actions:
 #
-# Requires:
+#   Deploy files into the tftp directory.
 #
 # Usage:
+#
+#   tftp::file { 'pxelinux.0':
+#     source => 'puppet:///modules/acme/pxelinux.0',
+#   }
+#
+#   tftp::file { 'pxelinux.cfg':
+#     ensure => directory,
+#   }
 #
 define tftp::file (
   $ensure       = file,
