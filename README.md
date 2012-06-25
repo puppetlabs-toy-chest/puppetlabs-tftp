@@ -32,13 +32,16 @@ Example:
 
 Parameters:
 
-*  ensure: file type, default file.
-*  recurse: file recurse, default false.
-*  owner: file owner, default tftp.
-*  group: file group. default tftp.
-*  mode: file mode, default 0644 (puppet will change to 0755 for directories).
-*  content: file content.
-*  source: file source.
+* ensure: file type, default file.
+* owner: file owner, default tftp.
+* group: file group. default tftp.
+* mode: file mode, default 0644 (puppet will change to 0755 for directories).
+* content: file content.
+* source: file source, defaults to puppet:///module/${caller_module_name}/${name} for files without content.
+* recurse: directory recurse, default false.
+* purge: directory recurse and purge.
+* replace: replace directory with file or symlink, default undef,
+* recurselimit: directory recurse limit, default undef,
 
 Example:
 
@@ -51,8 +54,13 @@ Example:
     }
     
     tftp::file { 'pxelinux.cfg/default':
-      source => 'puppet:///modules/acme/default',
+      ensure => file,
+      source => 'puppet:///modules/acme/pxelinux.cfg/default',
     }
+
+The last example can be abbreviated to the following if it's in the acme module:
+
+    tftp::file { 'pxelinux.cfg/default': }
 
 ## Example
 

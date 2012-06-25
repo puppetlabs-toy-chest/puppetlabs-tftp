@@ -11,10 +11,10 @@ describe 'tftp::file' do
     it { should include_class('tftp') }
     it { should contain_file('/srv/tftp/sample').with({
       'ensure'  => 'file',
-      'recurse' => false,
       'owner'   => 'tftp',
       'group'   => 'tftp',
-      'mode'    => '0644'
+      'mode'    => '0644',
+      'recurse' => false,
     }) }
   end
 
@@ -25,29 +25,29 @@ describe 'tftp::file' do
     it { should include_class('tftp') }
     it { should contain_file('/var/lib/tftpboot/sample').with({
       'ensure'  => 'file',
-      'recurse' => false,
       'owner'   => 'tftp',
       'group'   => 'tftp',
-      'mode'    => '0644'
+      'mode'    => '0644',
+      'recurse' => false,
     }) }
   end
 
   describe 'when deploying with parameters' do
-    let(:params) { {:ensure  => 'directory',
-                    :recurse => true,
-                    :owner   => 'root',
-                    :group   => 'root',
-                    :mode    => '0755' }}
+    let(:params) { {:ensure => 'directory',
+                    :owner  => 'root',
+                    :group  => 'root',
+                    :mode   => '0755',
+                    :recurse => true }}
     let(:facts) { { :operatingsystem => 'Debian',
                     :path            => '/usr/local/bin:/usr/bin:/bin', } }
 
     it { should include_class('tftp') }
     it { should contain_file('/srv/tftp/sample').with({
       'ensure'  => 'directory',
-      'recurse' => true,
       'owner'   => 'root',
       'group'   => 'root',
-      'mode'    => '0755'
+      'mode'    => '0755',
+      'recurse' => true,
     }) }
   end
 
@@ -61,14 +61,14 @@ describe 'tftp::file' do
       'recurse'      => false,
       'purge'        => nil,
       'replace'      => nil,
-      'recurselimit' => nil
+      'recurselimit' => nil,
     }) }
   end
 
   describe 'when deploying with recurse parameters' do
     let(:params) { {:ensure       => 'directory',
-                    :recurse      => true,
                     :mode         => '0755',
+                    :recurse      => true,
                     :recurselimit => 42,
                     :purge        => true,
                     :replace      => false }}
@@ -78,13 +78,60 @@ describe 'tftp::file' do
     it { should include_class('tftp') }
     it { should contain_file('/srv/tftp/sample').with({
       'ensure'       => 'directory',
-      'recurse'      => true,
       'owner'        => 'tftp',
       'group'        => 'tftp',
       'mode'         => '0755',
+      'recurse'      => true,
       'recurselimit' => 42,
       'purge'        => true,
       'replace'      => false,
+    }) }
+  end
+
+  describe 'when deploying directory' do
+    let(:params) { {:ensure => 'directory',
+                    :mode   => '0755' }}
+    let(:facts) { { :operatingsystem    => 'Debian',
+                    :caller_module_name => 'acme',
+                    :path               => '/usr/local/bin:/usr/bin:/bin', } }
+
+    it { should include_class('tftp') }
+    it { should contain_file('/srv/tftp/sample').with({
+      'ensure' => 'directory',
+      'mode'   => '0755',
+      'source' => nil,
+    }) }
+  end
+
+  describe 'when deploying file from another module' do
+    let(:params) { {:ensure => 'file',
+                    :mode   => '0755' }}
+    let(:facts) { { :operatingsystem    => 'Debian',
+                    :caller_module_name => 'acme',
+                    :path               => '/usr/local/bin:/usr/bin:/bin', } }
+
+    it { should include_class('tftp') }
+    it { should contain_file('/srv/tftp/sample').with({
+      'ensure' => 'file',
+      'mode'   => '0755',
+      'source' => 'puppet:///modules/acme/sample'
+    }) }
+  end
+
+  describe 'when deploying file with content' do
+    let(:params) { {:ensure  => 'file',
+                    :content => 'hi',
+                    :mode    => '0755' }}
+    let(:facts) { { :operatingsystem    => 'Debian',
+                    :caller_module_name => 'acme',
+                    :path               => '/usr/local/bin:/usr/bin:/bin', } }
+
+    it { should include_class('tftp') }
+    it { should contain_file('/srv/tftp/sample').with({
+      'ensure'  => 'file',
+      'mode'    => '0755',
+      'content' => 'hi',
+      'source'  => nil,
     }) }
   end
 end
