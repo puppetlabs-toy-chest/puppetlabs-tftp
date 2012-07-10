@@ -6,6 +6,7 @@ describe 'tftp::file' do
 
   describe 'when deploying on debian' do
     let(:facts) { { :operatingsystem => 'Debian',
+                    :osfamily        => 'Debian',
                     :path            => '/usr/local/bin:/usr/bin:/bin', } }
 
     it { should include_class('tftp') }
@@ -20,6 +21,7 @@ describe 'tftp::file' do
 
   describe 'when deploying on ubuntu' do
     let(:facts) { { :operatingsystem => 'ubuntu',
+                    :osfamily        => 'Debian',
                     :path            => '/usr/local/bin:/usr/bin:/bin', } }
 
     it { should include_class('tftp') }
@@ -39,6 +41,7 @@ describe 'tftp::file' do
                     :mode   => '0755',
                     :recurse => true }}
     let(:facts) { { :operatingsystem => 'Debian',
+                    :osfamily        => 'Debian',
                     :path            => '/usr/local/bin:/usr/bin:/bin', } }
 
     it { should include_class('tftp') }
@@ -53,6 +56,7 @@ describe 'tftp::file' do
 
   describe 'when deploying without recurse parameters' do
     let(:facts) { {:operatingsystem => 'Debian',
+                   :osfamily        => 'Debian',
                    :path            => '/usr/local/bin:/usr/bin:/bin', } }
 
     it { should include_class('tftp') }
@@ -73,6 +77,7 @@ describe 'tftp::file' do
                     :purge        => true,
                     :replace      => false }}
     let(:facts) { {:operatingsystem => 'Debian',
+                   :osfamily        => 'Debian',
                    :path            => '/usr/local/bin:/usr/bin:/bin', }}
 
     it { should include_class('tftp') }
@@ -92,6 +97,7 @@ describe 'tftp::file' do
     let(:params) { {:ensure => 'directory',
                     :mode   => '0755' }}
     let(:facts) { { :operatingsystem    => 'Debian',
+                    :osfamily           => 'Debian',
                     :caller_module_name => 'acme',
                     :path               => '/usr/local/bin:/usr/bin:/bin', } }
 
@@ -107,6 +113,7 @@ describe 'tftp::file' do
     let(:params) { {:ensure => 'file',
                     :mode   => '0755' }}
     let(:facts) { { :operatingsystem    => 'Debian',
+                    :osfamily           => 'Debian',
                     :caller_module_name => 'acme',
                     :path               => '/usr/local/bin:/usr/bin:/bin', } }
 
@@ -123,6 +130,7 @@ describe 'tftp::file' do
                     :content => 'hi',
                     :mode    => '0755' }}
     let(:facts) { { :operatingsystem    => 'Debian',
+                    :osfamily           => 'Debian',
                     :caller_module_name => 'acme',
                     :path               => '/usr/local/bin:/usr/bin:/bin', } }
 
