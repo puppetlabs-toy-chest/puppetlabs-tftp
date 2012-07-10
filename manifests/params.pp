@@ -5,7 +5,6 @@ class tftp::params {
   $address    = '0.0.0.0'
   $port       = '69'
   $options    = '--secure'
-  $inetd_conf = '/etc/inetd.conf'
   $binary     = '/usr/sbin/in.tftpd'
 
   case $::osfamily {

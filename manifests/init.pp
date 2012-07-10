@@ -7,14 +7,13 @@
 #   [*address*]: tftp service bind address (default 0.0.0.0).
 #   [*port*]: tftp service bind port (default 69).
 #   [*options*]: tftp service bind port (default 69).
-#   [*inetd*]: tftp service bind port (default 69).
-#   [*inetd_conf*]: tftp service bind port (default 69).
+#   [*inetd*]: Run as an xinetd service instead of standalone daemon (false)
 #
 # Actions:
 #
 # Requires:
 #
-#   puppetlabs-inetd when inetd = true.
+#   Class['xinetd']  (if inetd set to true)
 #
 # Usage:
 #
@@ -31,7 +30,6 @@ class tftp (
   $port       = $tftp::params::port,
   $options    = $tftp::params::options,
   $inetd      = false,
-  $inetd_conf = $tftp::params::inetd_conf,
   $package    = $tftp::params::package,
   $binary     = $tftp::params::binary,
   $defaults   = $tftp::params::defaults
