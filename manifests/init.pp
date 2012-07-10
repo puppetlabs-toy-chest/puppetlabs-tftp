@@ -54,9 +54,6 @@ class tftp (
   }
 
   if $inetd {
-    if $options != '--secure' {
-      fail('tftp class does not support custom options when inetd is enabled.')
-    }
 
     include 'xinetd'
 
