@@ -6,12 +6,12 @@ class tftp::params {
   $port       = '69'
   $options    = '--secure'
   $inetd_conf = '/etc/inetd.conf'
+  $binary     = '/usr/sbin/in.tftpd'
 
   case $::osfamily {
     'debian': {
       $package  = 'tftpd-hpa'
       $defaults = true
-      $binary   = undef
       $username = 'tftp'
       case $::operatingsystem {
         'debian': {
@@ -39,7 +39,6 @@ class tftp::params {
       $directory  = '/var/lib/tftpboot'
       $hasstatus  = false
       $provider   = 'base'
-      $binary     = '/usr/sbin/in.tftpd'
     }
     default: {
       $package    = 'tftpd'
@@ -47,7 +46,6 @@ class tftp::params {
       $defaults   = false
       $hasstatus  = false
       $provider   = undef
-      $binary     = '/usr/sbin/in.tftpd'
       warning("tftp:: $::operatingsystem may not be supported")
     }
   }
