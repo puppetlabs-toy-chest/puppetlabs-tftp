@@ -58,25 +58,21 @@ class tftp (
       fail('tftp class does not support custom options when inetd is enabled.')
     }
 
-    include 'inetd'
+    include 'xinetd'
 
-    augeas { 'inetd_tftp':
-      changes => [
-        "ins tftp after /files${inetd_conf}",
-        "set /files${inetd_conf}/tftp/socket dgram",
-        "set /files${inetd_conf}/tftp/protocol udp",
-        "set /files${inetd_conf}/tftp/wait wait",
-        "set /files${inetd_conf}/tftp/user ${username}",
-        "set /files${inetd_conf}/tftp/command /usr/libexec/tftpd",
-        "set /files${inetd_conf}/tftp/arguments/1 tftpd",
-        "set /files${inetd_conf}/tftp/arguments/2 --address",
-        "set /files${inetd_conf}/tftp/arguments/3 ${address}:${port}",
-        "set /files${inetd_conf}/tftp/arguments/4 --secure",
-        "set /files${inetd_conf}/tftp/arguments/5 ${directory}",
-      ],
-      require => Class['inetd'],
-    }
-
+    xinetd::service { 'tftp':
+      port        => $port,
+      protocol    => 'udp',
+      server_args => "${options} ${directory}",
+      server      => $binary,
+      user        => $username,
+      bind        => $address,
+      socket_type => 'dgram',
+      cps         => '100 2',
+      flags       => 'IPv4',
+      per_source  => '11',
+      wait        => 'yes',
+  }
     $svc_ensure = stopped
     $svc_enable = false
   } else {
@@ -84,9 +80,9 @@ class tftp (
     $svc_enable = true
   }
 
-  $start = $binary ? {
-    undef =>  undef,
-    default =>  "${binary} -l -a ${address}:${port} -u ${username} ${options} ${directory}"
+  $start = $provider ? {
+    'base'  => "${binary} -l -a ${address}:${port} -u ${username} ${options} ${directory}",
+    default => undef
   }
 
   service { 'tftpd-hpa':
