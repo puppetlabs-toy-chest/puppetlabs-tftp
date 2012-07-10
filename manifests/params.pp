@@ -4,28 +4,52 @@
 class tftp::params {
   $address    = '0.0.0.0'
   $port       = '69'
-  $username   = 'tftp'
   $options    = '--secure'
   $inetd_conf = '/etc/inetd.conf'
 
-  case $::operatingsystem {
+  case $::osfamily {
     'debian': {
-      # hasstatus is to get around an issue where the service script appears to
-      # be broken.
-      $directory = '/srv/tftp'
-      $hasstatus = false
-      $provider  = undef
+      $package  = 'tftpd-hpa'
+      $defaults = true
+      $binary   = undef
+      $username = 'tftp'
+      case $::operatingsystem {
+        'debian': {
+          $directory  = '/srv/tftp'
+          $hasstatus  = false
+          $provider   = undef
+        }
+        'ubuntu': {
+          $directory  = '/var/lib/tftpboot'
+          $hasstatus  = true
+          $provider   = 'upstart'
+        }
+        default: {
+          $directory  = '/var/lib/tftpboot'
+          $hasstatus  = true
+          $provider   = undef
+          warning("tftp:: cannot determine settings for $::operatingsystem")
+        }
+      }
     }
-    'ubuntu': {
-      $directory = '/var/lib/tftpboot'
-      $hasstatus = true
-      $provider  = 'upstart'
+    'redhat': {
+      $package    = 'tftp-server'
+      $username   = 'nobody'
+      $defaults   = false
+      $directory  = '/var/lib/tftpboot'
+      $hasstatus  = false
+      $provider   = 'base'
+      $binary     = '/usr/sbin/in.tftpd'
     }
     default: {
-      warning("tftp:: not verified on operatingsystem ${::operatingsystem}.")
-      $directory = '/var/lib/tftpboot'
-      $hasstatus = true
-      $provider  = undef
+      $package    = 'tftpd'
+      $username   = 'nobody'
+      $defaults   = false
+      $hasstatus  = false
+      $provider   = undef
+      $binary     = '/usr/sbin/in.tftpd'
+      warning("tftp:: $::operatingsystem may not be supported")
     }
   }
+
 }

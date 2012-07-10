@@ -31,19 +31,26 @@ class tftp (
   $port       = $tftp::params::port,
   $options    = $tftp::params::options,
   $inetd      = false,
-  $inetd_conf = $tftp::params::inetd_conf
+  $inetd_conf = $tftp::params::inetd_conf,
+  $package    = $tftp::params::package,
+  $binary     = $tftp::params::binary,
+  $defaults   = $tftp::params::defaults
 ) inherits tftp::params {
-  package { 'tftpd-hpa':
-    ensure => present,
-  }
 
-  file { '/etc/default/tftpd-hpa':
-    ensure  => file,
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0644',
-    content => template('tftp/tftpd-hpa.erb'),
-    require => Package['tftpd-hpa'],
+  package { 'tftpd-hpa':
+    ensure  => present,
+    name    => $package,
+  }
+  if $defaults {
+	  file { '/etc/default/tftpd-hpa':
+	    ensure  => file,
+	    owner   => 'root',
+	    group   => 'root',
+	    mode    => '0644',
+	    content => template('tftp/tftpd-hpa.erb'),
+	    require => Package['tftpd-hpa'],
+      notify  => Service['tftpd-hpa'],
+	  }
   }
 
   if $inetd {
@@ -77,12 +84,17 @@ class tftp (
     $svc_enable = true
   }
 
+  $start = $binary ? {
+    undef =>  undef,
+    default =>  "${binary} -l -a ${address}:${port} -u ${username} ${options} ${directory}"
+  }
+
   service { 'tftpd-hpa':
     ensure    => $svc_ensure,
     enable    => $svc_enable,
     provider  => $tftp::params::provider,
     hasstatus => $tftp::params::hasstatus,
     pattern   => '/usr/sbin/in.tftpd',
-    subscribe => File['/etc/default/tftpd-hpa'],
+    start     => $start,
   }
 }
