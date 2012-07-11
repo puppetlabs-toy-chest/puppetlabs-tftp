@@ -29,8 +29,8 @@
 #
 define tftp::file (
   $ensure       = file,
-  $owner        = 'tftp',
-  $group        = 'tftp',
+  $owner        = undef,
+  $group        = undef,
   $mode         = '0644',
   $recurse      = false,
   $purge        = undef,
@@ -40,6 +40,19 @@ define tftp::file (
   $source       = undef
 ) {
   include 'tftp'
+  include 'tftp::params'
+
+  if $owner {
+    $tftp_owner = $owner
+  } else {
+    $tftp_owner = $tftp::params::username
+  }
+
+  if $group {
+    $tftp_group = $group
+  } else {
+    $tftp_group = $tftp::params::username
+  }
 
   if $source {
     $source_real = $source
@@ -54,8 +67,8 @@ define tftp::file (
 
   file { "${tftp::directory}/${name}":
     ensure       => $ensure,
-    owner        => $owner,
-    group        => $group,
+    owner        => $tftp_owner,
+    group        => $tftp_group,
     mode         => $mode,
     recurse      => $recurse,
     purge        => $purge,
