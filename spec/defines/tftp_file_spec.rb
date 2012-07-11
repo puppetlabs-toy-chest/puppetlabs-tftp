@@ -38,6 +38,23 @@ describe 'tftp::file' do
     }
   end
 
+  describe 'when deploying on redhat' do
+    let(:facts) { { :operatingsystem => 'RedHat',
+                    :osfamily        => 'redhat',
+                    :path            => '/usr/local/bin:/usr/bin:/bin', } }
+
+    it {
+      should include_class('tftp')
+      should contain_file('/var/lib/tftpboot/sample').with({
+        'ensure'  => 'file',
+        'owner'   => 'nobody',
+        'group'   => 'nobody',
+        'mode'    => '0644',
+        'recurse' => false,
+      })
+    }
+  end
+
   describe 'when deploying with parameters' do
     let(:params) { {:ensure => 'directory',
                     :owner  => 'root',
