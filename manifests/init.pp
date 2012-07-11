@@ -7,14 +7,13 @@
 #   [*address*]: tftp service bind address (default 0.0.0.0).
 #   [*port*]: tftp service bind port (default 69).
 #   [*options*]: tftp service bind port (default 69).
-#   [*inetd*]: tftp service bind port (default 69).
-#   [*inetd_conf*]: tftp service bind port (default 69).
+#   [*inetd*]: Run as an xinetd service instead of standalone daemon (false)
 #
 # Actions:
 #
 # Requires:
 #
-#   puppetlabs-inetd when inetd = true.
+#   Class['xinetd']  (if inetd set to true)
 #
 # Usage:
 #
@@ -31,50 +30,54 @@ class tftp (
   $port       = $tftp::params::port,
   $options    = $tftp::params::options,
   $inetd      = false,
-  $inetd_conf = $tftp::params::inetd_conf
+  $package    = $tftp::params::package,
+  $binary     = $tftp::params::binary,
+  $defaults   = $tftp::params::defaults
 ) inherits tftp::params {
-  package { 'tftpd-hpa':
-    ensure => present,
-  }
 
-  file { '/etc/default/tftpd-hpa':
-    ensure  => file,
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0644',
-    content => template('tftp/tftpd-hpa.erb'),
-    require => Package['tftpd-hpa'],
+  package { 'tftpd-hpa':
+    ensure  => present,
+    name    => $package,
+  }
+  if $defaults {
+	  file { '/etc/default/tftpd-hpa':
+	    ensure  => file,
+	    owner   => 'root',
+	    group   => 'root',
+	    mode    => '0644',
+	    content => template('tftp/tftpd-hpa.erb'),
+	    require => Package['tftpd-hpa'],
+      notify  => Service['tftpd-hpa'],
+	  }
   }
 
   if $inetd {
-    if $options != '--secure' {
-      fail('tftp class does not support custom options when inetd is enabled.')
-    }
 
-    include 'inetd'
+    include 'xinetd'
 
-    augeas { 'inetd_tftp':
-      changes => [
-        "ins tftp after /files${inetd_conf}",
-        "set /files${inetd_conf}/tftp/socket dgram",
-        "set /files${inetd_conf}/tftp/protocol udp",
-        "set /files${inetd_conf}/tftp/wait wait",
-        "set /files${inetd_conf}/tftp/user ${username}",
-        "set /files${inetd_conf}/tftp/command /usr/libexec/tftpd",
-        "set /files${inetd_conf}/tftp/arguments/1 tftpd",
-        "set /files${inetd_conf}/tftp/arguments/2 --address",
-        "set /files${inetd_conf}/tftp/arguments/3 ${address}:${port}",
-        "set /files${inetd_conf}/tftp/arguments/4 --secure",
-        "set /files${inetd_conf}/tftp/arguments/5 ${directory}",
-      ],
-      require => Class['inetd'],
-    }
-
+    xinetd::service { 'tftp':
+      port        => $port,
+      protocol    => 'udp',
+      server_args => "${options} ${directory}",
+      server      => $binary,
+      user        => $username,
+      bind        => $address,
+      socket_type => 'dgram',
+      cps         => '100 2',
+      flags       => 'IPv4',
+      per_source  => '11',
+      wait        => 'yes',
+  }
     $svc_ensure = stopped
     $svc_enable = false
   } else {
     $svc_ensure = running
     $svc_enable = true
+  }
+
+  $start = $provider ? {
+    'base'  => "${binary} -l -a ${address}:${port} -u ${username} ${options} ${directory}",
+    default => undef
   }
 
   service { 'tftpd-hpa':
@@ -83,6 +86,6 @@ class tftp (
     provider  => $tftp::params::provider,
     hasstatus => $tftp::params::hasstatus,
     pattern   => '/usr/sbin/in.tftpd',
-    subscribe => File['/etc/default/tftpd-hpa'],
+    start     => $start,
   }
 }
