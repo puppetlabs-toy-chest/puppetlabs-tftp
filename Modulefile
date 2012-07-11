@@ -8,4 +8,4 @@ description 'Manage tftp service and files for Debian/Ubuntu.'
 project_page 'https://github.com/puppetlabs/puppetlabs-tftp'
 
 ## Add dependencies, if any:
-# dependency 'username/name', '>= 1.2.0'
+dependency 'puppetlabs/xinetd', '>= 1.1.0'
