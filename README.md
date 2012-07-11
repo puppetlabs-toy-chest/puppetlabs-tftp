@@ -2,7 +2,7 @@
 
 ## Overview
 
-Install tftp-hpa package and configuration files for osfamily Debian.
+Install tftp-hpa package and configuration files
 
 ## Usage
 
@@ -10,15 +10,12 @@ Install tftp-hpa package and configuration files for osfamily Debian.
 
 Parameters:
 
-* username: tftp daemon user, default tftp.
+* username: tftp daemon user, default tftp(debian) or nobody(redhat).
 * directory: service directory, deafult see params class.
 * address: bind address, default 0.0.0.0.
 * port: bind port, default 69.
 * options: service option, default --secure.
-* inetd: run service via inetd, default false. (Warning: this option when enabled to true is not compatible with custom service options).
-* inetd_conf: inetd.conf file path, default /etc/inetd.conf.
-
-Enabling inetd requires [puppetlabs-inetd](https://github.com/puppetlabs/puppetlabs-inetd) module.
+* inetd: run service via xinetd - default false.
 
 Example:
 
@@ -90,3 +87,4 @@ The module have been tested on the following operating systems. Testing and patc
 
 * Debian Wheezy
 * Ubuntu Oneiric
+* CentOS
