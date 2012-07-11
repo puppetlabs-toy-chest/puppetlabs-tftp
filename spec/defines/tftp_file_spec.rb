@@ -121,12 +121,11 @@ describe 'tftp::file' do
     }
   end
 
-  describe 'when deploying file from another module' do
+  describe 'when deploying file' do
     let(:params) { {:ensure => 'file',
                     :mode   => '0755' }}
     let(:facts) { { :operatingsystem    => 'Debian',
                     :osfamily           => 'Debian',
-                    :caller_module_name => 'acme',
                     :path               => '/usr/local/bin:/usr/bin:/bin', } }
 
     it {
@@ -134,7 +133,7 @@ describe 'tftp::file' do
       should contain_file('/srv/tftp/sample').with({
         'ensure' => 'file',
         'mode'   => '0755',
-        'source' => 'puppet:///modules/acme/sample'
+        'source' => 'puppet:///modules/tftp/sample'
       })
     }
   end
@@ -147,7 +146,6 @@ describe 'tftp::file' do
                     :osfamily           => 'Debian',
                     :caller_module_name => 'acme',
                     :path               => '/usr/local/bin:/usr/bin:/bin', } }
-
     it {
       should include_class('tftp')
       should contain_file('/srv/tftp/sample').with({
