@@ -23,12 +23,6 @@ class tftp::params {
           $hasstatus  = true
           $provider   = 'upstart'
         }
-        default: {
-          $directory  = '/var/lib/tftpboot'
-          $hasstatus  = true
-          $provider   = undef
-          warning("tftp:: cannot determine settings for $::operatingsystem")
-        }
       }
     }
     'redhat': {
