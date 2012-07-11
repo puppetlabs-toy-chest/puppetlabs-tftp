@@ -9,14 +9,16 @@ describe 'tftp::file' do
                     :osfamily        => 'Debian',
                     :path            => '/usr/local/bin:/usr/bin:/bin', } }
 
-    it { should include_class('tftp') }
-    it { should contain_file('/srv/tftp/sample').with({
-      'ensure'  => 'file',
-      'owner'   => 'tftp',
-      'group'   => 'tftp',
-      'mode'    => '0644',
-      'recurse' => false,
-    }) }
+    it {
+      should include_class('tftp')
+      should contain_file('/srv/tftp/sample').with({
+        'ensure'  => 'file',
+        'owner'   => 'tftp',
+        'group'   => 'tftp',
+        'mode'    => '0644',
+        'recurse' => false,
+      })
+    }
   end
 
   describe 'when deploying on ubuntu' do
@@ -24,14 +26,16 @@ describe 'tftp::file' do
                     :osfamily        => 'Debian',
                     :path            => '/usr/local/bin:/usr/bin:/bin', } }
 
-    it { should include_class('tftp') }
-    it { should contain_file('/var/lib/tftpboot/sample').with({
-      'ensure'  => 'file',
-      'owner'   => 'tftp',
-      'group'   => 'tftp',
-      'mode'    => '0644',
-      'recurse' => false,
-    }) }
+    it {
+      should include_class('tftp')
+      should contain_file('/var/lib/tftpboot/sample').with({
+        'ensure'  => 'file',
+        'owner'   => 'tftp',
+        'group'   => 'tftp',
+        'mode'    => '0644',
+        'recurse' => false,
+      })
+    }
   end
 
   describe 'when deploying with parameters' do
@@ -44,14 +48,16 @@ describe 'tftp::file' do
                     :osfamily        => 'Debian',
                     :path            => '/usr/local/bin:/usr/bin:/bin', } }
 
-    it { should include_class('tftp') }
-    it { should contain_file('/srv/tftp/sample').with({
-      'ensure'  => 'directory',
-      'owner'   => 'root',
-      'group'   => 'root',
-      'mode'    => '0755',
-      'recurse' => true,
-    }) }
+    it {
+      should include_class('tftp')
+      should contain_file('/srv/tftp/sample').with({
+        'ensure'  => 'directory',
+        'owner'   => 'root',
+        'group'   => 'root',
+        'mode'    => '0755',
+        'recurse' => true,
+      })
+    }
   end
 
   describe 'when deploying without recurse parameters' do
@@ -59,14 +65,16 @@ describe 'tftp::file' do
                    :osfamily        => 'Debian',
                    :path            => '/usr/local/bin:/usr/bin:/bin', } }
 
-    it { should include_class('tftp') }
-    it { should contain_file('/srv/tftp/sample').with({
-      'ensure'       => 'file',
-      'recurse'      => false,
-      'purge'        => nil,
-      'replace'      => nil,
-      'recurselimit' => nil,
-    }) }
+    it {
+      should include_class('tftp')
+      should contain_file('/srv/tftp/sample').with({
+        'ensure'       => 'file',
+        'recurse'      => false,
+        'purge'        => nil,
+        'replace'      => nil,
+        'recurselimit' => nil,
+      })
+    }
   end
 
   describe 'when deploying with recurse parameters' do
@@ -80,17 +88,19 @@ describe 'tftp::file' do
                    :osfamily        => 'Debian',
                    :path            => '/usr/local/bin:/usr/bin:/bin', }}
 
-    it { should include_class('tftp') }
-    it { should contain_file('/srv/tftp/sample').with({
-      'ensure'       => 'directory',
-      'owner'        => 'tftp',
-      'group'        => 'tftp',
-      'mode'         => '0755',
-      'recurse'      => true,
-      'recurselimit' => 42,
-      'purge'        => true,
-      'replace'      => false,
-    }) }
+    it {
+      should include_class('tftp')
+      should contain_file('/srv/tftp/sample').with({
+        'ensure'       => 'directory',
+        'owner'        => 'tftp',
+        'group'        => 'tftp',
+        'mode'         => '0755',
+        'recurse'      => true,
+        'recurselimit' => 42,
+        'purge'        => true,
+        'replace'      => false,
+      })
+    }
   end
 
   describe 'when deploying directory' do
@@ -101,12 +111,14 @@ describe 'tftp::file' do
                     :caller_module_name => 'acme',
                     :path               => '/usr/local/bin:/usr/bin:/bin', } }
 
-    it { should include_class('tftp') }
-    it { should contain_file('/srv/tftp/sample').with({
-      'ensure' => 'directory',
-      'mode'   => '0755',
-      'source' => nil,
-    }) }
+    it {
+      should include_class('tftp')
+      should contain_file('/srv/tftp/sample').with({
+        'ensure' => 'directory',
+        'mode'   => '0755',
+        'source' => nil,
+      })
+    }
   end
 
   describe 'when deploying file from another module' do
@@ -117,12 +129,14 @@ describe 'tftp::file' do
                     :caller_module_name => 'acme',
                     :path               => '/usr/local/bin:/usr/bin:/bin', } }
 
-    it { should include_class('tftp') }
-    it { should contain_file('/srv/tftp/sample').with({
-      'ensure' => 'file',
-      'mode'   => '0755',
-      'source' => 'puppet:///modules/acme/sample'
-    }) }
+    it {
+      should include_class('tftp')
+      should contain_file('/srv/tftp/sample').with({
+        'ensure' => 'file',
+        'mode'   => '0755',
+        'source' => 'puppet:///modules/acme/sample'
+      })
+    }
   end
 
   describe 'when deploying file with content' do
@@ -134,12 +148,15 @@ describe 'tftp::file' do
                     :caller_module_name => 'acme',
                     :path               => '/usr/local/bin:/usr/bin:/bin', } }
 
-    it { should include_class('tftp') }
-    it { should contain_file('/srv/tftp/sample').with({
-      'ensure'  => 'file',
-      'mode'    => '0755',
-      'content' => 'hi',
-      'source'  => nil,
-    }) }
+    it {
+      should include_class('tftp')
+      should contain_file('/srv/tftp/sample').with({
+        'ensure'  => 'file',
+        'mode'    => '0755',
+        'content' => 'hi',
+        'source'  => nil,
+      })
+    }
   end
+
 end

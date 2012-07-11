@@ -6,14 +6,16 @@ describe 'tftp', :type => :class do
                     :osfamily         => 'Debian',
                     :path             => '/usr/local/bin:/usr/bin:/bin', } }
 
-    it { should contain_file('/etc/default/tftpd-hpa') }
-    it { should contain_package('tftpd-hpa') }
-    it { should contain_service('tftpd-hpa').with({
-      'ensure'    => 'running',
-      'enable'    => true,
-      'hasstatus' => false,
-      'provider'  => nil,
-    }) }
+    it {
+      should contain_file('/etc/default/tftpd-hpa')
+      should contain_package('tftpd-hpa')
+      should contain_service('tftpd-hpa').with({
+       'ensure'    => 'running',
+       'enable'    => true,
+       'hasstatus' => false,
+       'provider'  => nil,
+      })
+    }
   end
 
   describe 'when deploying on ubuntu' do
@@ -21,31 +23,35 @@ describe 'tftp', :type => :class do
                     :osfamily         => 'Debian',
                     :path             => '/usr/local/bin:/usr/bin:/bin', } }
 
-    it { should contain_package('tftpd-hpa') }
-    it { should contain_file('/etc/default/tftpd-hpa') }
-    it { should contain_service('tftpd-hpa').with({
-      'ensure'    => 'running',
-      'enable'    => true,
-      'hasstatus' => true,
-      'provider'  => 'upstart',
-    }) }
+    it {
+      should contain_package('tftpd-hpa')
+      should contain_file('/etc/default/tftpd-hpa')
+      should contain_service('tftpd-hpa').with({
+        'ensure'    => 'running',
+       'enable'    => true,
+       'hasstatus' => true,
+       'provider'  => 'upstart',
+      })
+    }
   end
 
   describe 'when deploying on redhat family' do
     let (:facts) { {  :osfamily         => 'RedHat',
                       :path             => '/usr/local/bin:/usr/bin:/bin', } }
 
-    it { should contain_package('tftpd-hpa').with({
-      'name'      => 'tftp-server',
-    }) }
+    it {
+      should contain_package('tftpd-hpa').with({
+        'name'      => 'tftp-server',
+    })
 
-    it { should contain_service('tftpd-hpa').with({
-      'ensure'    => 'running',
-      'enable'    => 'true',
-      'hasstatus' => false,
-      'provider'  => 'base',
-      'start'     => '/usr/sbin/in.tftpd -l -a 0.0.0.0:69 -u nobody --secure /var/lib/tftpboot',
-    }) }
+      should contain_service('tftpd-hpa').with({
+       'ensure'    => 'running',
+       'enable'    => 'true',
+       'hasstatus' => false,
+       'provider'  => 'base',
+       'start'     => '/usr/sbin/in.tftpd -l -a 0.0.0.0:69 -u nobody --secure /var/lib/tftpboot',
+      })
+    }
   end
 
   describe 'when deploying on redhat family with custom options' do
@@ -57,41 +63,44 @@ describe 'tftp', :type => :class do
                       :options          => '--secure --timeout 50',
                       :directory        => '/tftpboot', } }
 
-    it { should contain_package('tftpd-hpa').with({
-      'name'      => 'tftp-server',
-    }) }
+    it {
+      should contain_package('tftpd-hpa').with({
+        'name'      => 'tftp-server',
+      })
 
-    it { should contain_service('tftpd-hpa').with({
-      'ensure'    => 'running',
-      'enable'    => 'true',
-      'hasstatus' => false,
-      'provider'  => 'base',
-      'start'     => '/usr/sbin/in.tftpd -l -a 127.0.0.1:1069 -u root --secure --timeout 50 /tftpboot',
-    }) }
+      should contain_service('tftpd-hpa').with({
+        'ensure'    => 'running',
+        'enable'    => 'true',
+        'hasstatus' => false,
+        'provider'  => 'base',
+        'start'     => '/usr/sbin/in.tftpd -l -a 127.0.0.1:1069 -u root --secure --timeout 50 /tftpboot',
+      })
+    }
   end
 
   describe 'when deploying with xinetd on redhat family' do
     let (:facts) { {  :osfamily => 'Redhat',
                       :path     => '/usr/local/bin:/usr/bin:/bin', } }
     let (:params) { { :inetd    => true, } }
-    it { should include_class('xinetd') }
-    it { should contain_service('tftpd-hpa').with({
-      'ensure'      => 'stopped',
-      'enable'      => false,
-    }) }
-    it { should contain_xinetd__service('tftp').with({
-      'port'        => '69',
-      'protocol'    => 'udp',
-      'server_args' => '--secure /var/lib/tftpboot',
-      'server'      => '/usr/sbin/in.tftpd',
-      'user'        => 'nobody',
-      'socket_type' => 'dgram',
-      'cps'         => '100 2',
-      'flags'       => 'IPv4',
-      'per_source'   => '11',
-      'wait'        => 'yes',
-   }) }
-
+    it {
+      should include_class('xinetd')
+      should contain_service('tftpd-hpa').with({
+        'ensure'      => 'stopped',
+        'enable'      => false,
+    })
+      should contain_xinetd__service('tftp').with({
+        'port'        => '69',
+        'protocol'    => 'udp',
+        'server_args' => '--secure /var/lib/tftpboot',
+        'server'      => '/usr/sbin/in.tftpd',
+        'user'        => 'nobody',
+        'socket_type' => 'dgram',
+        'cps'         => '100 2',
+        'flags'       => 'IPv4',
+        'per_source'   => '11',
+        'wait'        => 'yes',
+      })
+    }
   end
 
   describe 'when deploying with xinetd on ubuntu' do
@@ -99,24 +108,25 @@ describe 'tftp', :type => :class do
                       :operatingsystem  => 'Ubuntu',
                       :path     => '/usr/local/bin:/usr/bin:/bin', } }
     let (:params) { { :inetd    => true, } }
-    it { should include_class('xinetd') }
-    it { should contain_service('tftpd-hpa').with({
-      'ensure'      => 'stopped',
-      'enable'      => false,
-    }) }
-    it { should contain_xinetd__service('tftp').with({
-      'port'        => '69',
-      'protocol'    => 'udp',
-      'server_args' => '--secure /var/lib/tftpboot',
-      'server'      => '/usr/sbin/in.tftpd',
-      'user'        => 'tftp',
-      'socket_type' => 'dgram',
-      'cps'         => '100 2',
-      'flags'       => 'IPv4',
-      'per_source'   => '11',
-      'wait'        => 'yes',
-   }) }
-
+    it {
+      should include_class('xinetd')
+      should contain_service('tftpd-hpa').with({
+        'ensure'      => 'stopped',
+        'enable'      => false,
+      })
+      should contain_xinetd__service('tftp').with({
+        'port'        => '69',
+        'protocol'    => 'udp',
+        'server_args' => '--secure /var/lib/tftpboot',
+        'server'      => '/usr/sbin/in.tftpd',
+        'user'        => 'tftp',
+        'socket_type' => 'dgram',
+        'cps'         => '100 2',
+        'flags'       => 'IPv4',
+        'per_source'   => '11',
+        'wait'        => 'yes',
+      })
+    }
   end
 
   describe 'when deploying with xinetd on debian' do
@@ -124,21 +134,22 @@ describe 'tftp', :type => :class do
                       :operatingsystem  => 'Debian',
                       :path     => '/usr/local/bin:/usr/bin:/bin', } }
     let (:params) { { :inetd    => true, } }
-    it { should include_class('xinetd') }
-    it { should contain_xinetd__service('tftp').with({
-      'port'        => '69',
-      'protocol'    => 'udp',
-      'server_args' => '--secure /srv/tftp',
-      'server'      => '/usr/sbin/in.tftpd',
-      'user'        => 'tftp',
-      'socket_type' => 'dgram',
-      'cps'         => '100 2',
-      'flags'       => 'IPv4',
-      'per_source'  => '11',
-      'wait'        => 'yes',
-      'bind'        => '0.0.0.0',
-   }) }
-
+    it {
+      should include_class('xinetd')
+      should contain_xinetd__service('tftp').with({
+        'port'        => '69',
+        'protocol'    => 'udp',
+        'server_args' => '--secure /srv/tftp',
+        'server'      => '/usr/sbin/in.tftpd',
+        'user'        => 'tftp',
+        'socket_type' => 'dgram',
+        'cps'         => '100 2',
+        'flags'       => 'IPv4',
+        'per_source'  => '11',
+        'wait'        => 'yes',
+        'bind'        => '0.0.0.0',
+      })
+    }
   end
 
   describe 'when deploying with xinetd with custom options' do
@@ -147,21 +158,22 @@ describe 'tftp', :type => :class do
                       :path     => '/usr/local/bin:/usr/bin:/bin', } }
     let (:params) { { :inetd    => true,
                       :options  => '--secure --timeout 50', } }
-    it { should include_class('xinetd') }
-    it { should contain_xinetd__service('tftp').with({
-      'port'        => '69',
-      'protocol'    => 'udp',
-      'server_args' => '--secure --timeout 50 /srv/tftp',
-      'server'      => '/usr/sbin/in.tftpd',
-      'user'        => 'tftp',
-      'socket_type' => 'dgram',
-      'cps'         => '100 2',
-      'flags'       => 'IPv4',
-      'per_source'  => '11',
-      'wait'        => 'yes',
-      'bind'        => '0.0.0.0',
-   }) }
-
+    it {
+      should include_class('xinetd')
+      should contain_xinetd__service('tftp').with({
+        'port'        => '69',
+        'protocol'    => 'udp',
+        'server_args' => '--secure --timeout 50 /srv/tftp',
+        'server'      => '/usr/sbin/in.tftpd',
+        'user'        => 'tftp',
+        'socket_type' => 'dgram',
+        'cps'         => '100 2',
+        'flags'       => 'IPv4',
+        'per_source'  => '11',
+        'wait'        => 'yes',
+        'bind'        => '0.0.0.0',
+      })
+    }
   end
 
   describe 'when deploying with xinetd with custom settings' do
@@ -173,21 +185,22 @@ describe 'tftp', :type => :class do
                       :address    => '127.0.0.1',
                       :username   => 'root',
                       :directory  => '/tftpboot', } }
-    it { should include_class('xinetd') }
-    it { should contain_xinetd__service('tftp').with({
-      'port'        => '1069',
-      'protocol'    => 'udp',
-      'server_args' => '--secure /tftpboot',
-      'server'      => '/usr/sbin/in.tftpd',
-      'user'        => 'root',
-      'socket_type' => 'dgram',
-      'cps'         => '100 2',
-      'flags'       => 'IPv4',
-      'per_source'   => '11',
-      'wait'        => 'yes',
-      'bind'        => '127.0.0.1',
-   }) }
-
+    it {
+      should include_class('xinetd')
+      should contain_xinetd__service('tftp').with({
+        'port'        => '1069',
+        'protocol'    => 'udp',
+        'server_args' => '--secure /tftpboot',
+        'server'      => '/usr/sbin/in.tftpd',
+        'user'        => 'root',
+        'socket_type' => 'dgram',
+        'cps'         => '100 2',
+        'flags'       => 'IPv4',
+        'per_source'   => '11',
+        'wait'        => 'yes',
+        'bind'        => '127.0.0.1',
+      })
+    }
   end
 
 end
