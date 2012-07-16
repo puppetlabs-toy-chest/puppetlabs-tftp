@@ -29,7 +29,7 @@ class tftp (
   $address    = $tftp::params::address,
   $port       = $tftp::params::port,
   $options    = $tftp::params::options,
-  $inetd      = false,
+  $inetd      = $tftp::params::inetd,
   $package    = $tftp::params::package,
   $binary     = $tftp::params::binary,
   $defaults   = $tftp::params::defaults

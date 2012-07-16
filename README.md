@@ -4,6 +4,8 @@
 
 Install tftp-hpa package and configuration files
 
+This module will install TFTP as a xinetd service by default. It can be overridden to run as a standalone daemon by setting the inetd parameter to false.
+
 ## Usage
 
 ### class tftp
@@ -15,7 +17,7 @@ Parameters:
 * address: bind address, default 0.0.0.0.
 * port: bind port, default 69.
 * options: service option, default --secure.
-* inetd: run service via xinetd - default false.
+* inetd: run service via xinetd - default true
 
 Example:
 
