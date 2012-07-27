@@ -17,7 +17,7 @@ Parameters:
 * address: bind address, default 0.0.0.0.
 * port: bind port, default 69.
 * options: service option, default --secure.
-* inetd: run service via xinetd - default false.
+* inetd: run service via xinetd, default true.
 
 Example:
 
@@ -39,8 +39,8 @@ Parameters:
 * source: file source, defaults to puppet:///module/${caller_module_name}/${name} for files without content.
 * recurse: directory recurse, default false.
 * purge: directory recurse and purge.
-* replace: replace directory with file or symlink, default undef,
-* recurselimit: directory recurse limit, default undef,
+* replace: replace directory with file or symlink, default undef.
+* recurselimit: directory recurse limit, default undef.
 
 Example:
 
