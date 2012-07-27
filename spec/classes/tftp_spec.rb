@@ -1,11 +1,11 @@
 require 'spec_helper'
 describe 'tftp', :type => :class do
 
-  describe 'when deploying on debian' do
+  describe 'when deploying on debian as standalone' do
     let(:facts) { { :operatingsystem  => 'Debian',
                     :osfamily         => 'Debian',
                     :path             => '/usr/local/bin:/usr/bin:/bin', } }
-
+    let(:params) { {  :inetd  => false, } }
     it {
       should contain_file('/etc/default/tftpd-hpa')
       should contain_package('tftpd-hpa')
@@ -18,11 +18,11 @@ describe 'tftp', :type => :class do
     }
   end
 
-  describe 'when deploying on ubuntu' do
+  describe 'when deploying on ubuntu as standalone' do
     let(:facts) { { :operatingsystem  => 'Ubuntu',
                     :osfamily         => 'Debian',
                     :path             => '/usr/local/bin:/usr/bin:/bin', } }
-
+    let(:params) { {  :inetd  => false, } }
     it {
       should contain_package('tftpd-hpa')
       should contain_file('/etc/default/tftpd-hpa')
@@ -35,10 +35,10 @@ describe 'tftp', :type => :class do
     }
   end
 
-  describe 'when deploying on redhat family' do
+  describe 'when deploying on redhat family as standalone' do
     let (:facts) { {  :osfamily         => 'RedHat',
                       :path             => '/usr/local/bin:/usr/bin:/bin', } }
-
+    let(:params) { {  :inetd  => false, } }
     it {
       should contain_package('tftpd-hpa').with({
         'name'      => 'tftp-server',
@@ -54,11 +54,12 @@ describe 'tftp', :type => :class do
     }
   end
 
-  describe 'when deploying on redhat family with custom options' do
+  describe 'when deploying on redhat family with custom options as standalone' do
     let (:facts) { {  :osfamily         => 'RedHat',
                       :path             => '/usr/local/bin:/usr/bin:/bin', } }
     let (:params) { { :address          => '127.0.0.1',
                       :port             => '1069',
+                      :inetd            => false,
                       :username         => 'root',
                       :options          => '--secure --timeout 50',
                       :directory        => '/tftpboot', } }
@@ -81,7 +82,6 @@ describe 'tftp', :type => :class do
   describe 'when deploying with xinetd on redhat family' do
     let (:facts) { {  :osfamily => 'Redhat',
                       :path     => '/usr/local/bin:/usr/bin:/bin', } }
-    let (:params) { { :inetd    => true, } }
     it {
       should include_class('xinetd')
       should contain_service('tftpd-hpa').with({
@@ -107,7 +107,6 @@ describe 'tftp', :type => :class do
     let (:facts) { {  :osfamily         => 'Debian',
                       :operatingsystem  => 'Ubuntu',
                       :path     => '/usr/local/bin:/usr/bin:/bin', } }
-    let (:params) { { :inetd    => true, } }
     it {
       should include_class('xinetd')
       should contain_service('tftpd-hpa').with({
@@ -133,7 +132,6 @@ describe 'tftp', :type => :class do
     let (:facts) { {  :osfamily         => 'Debian',
                       :operatingsystem  => 'Debian',
                       :path     => '/usr/local/bin:/usr/bin:/bin', } }
-    let (:params) { { :inetd    => true, } }
     it {
       should include_class('xinetd')
       should contain_xinetd__service('tftp').with({
@@ -156,8 +154,7 @@ describe 'tftp', :type => :class do
     let (:facts) { {  :osfamily         => 'Debian',
                       :operatingsystem  => 'Debian',
                       :path     => '/usr/local/bin:/usr/bin:/bin', } }
-    let (:params) { { :inetd    => true,
-                      :options  => '--secure --timeout 50', } }
+    let (:params) { { :options  => '--secure --timeout 50', } }
     it {
       should include_class('xinetd')
       should contain_xinetd__service('tftp').with({
@@ -180,8 +177,7 @@ describe 'tftp', :type => :class do
     let (:facts) { {  :osfamily         => 'Debian',
                       :operatingsystem  => 'Debian',
                       :path       => '/usr/local/bin:/usr/bin:/bin', } }
-    let (:params) { { :inetd      => true,
-                      :port       => 1069,
+    let (:params) { { :port       => 1069,
                       :address    => '127.0.0.1',
                       :username   => 'root',
                       :directory  => '/tftpboot', } }

@@ -6,6 +6,7 @@ class tftp::params {
   $port       = '69'
   $options    = '--secure'
   $binary     = '/usr/sbin/in.tftpd'
+  $inetd      = true
 
   case $::osfamily {
     'debian': {
@@ -42,5 +43,4 @@ class tftp::params {
       warning("tftp:: $::operatingsystem may not be supported")
     }
   }
-
 }
