@@ -4,6 +4,8 @@
 
 Install tftp-hpa package and configuration files
 
+This module will install TFTP as a xinetd service by default. It can be overridden to run as a standalone daemon by setting the inetd parameter to false.
+
 ## Usage
 
 ### class tftp
