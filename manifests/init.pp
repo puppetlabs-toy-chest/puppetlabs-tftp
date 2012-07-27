@@ -39,20 +39,20 @@ class tftp (
     ensure  => present,
     name    => $package,
   }
+
   if $defaults {
-	  file { '/etc/default/tftpd-hpa':
-	    ensure  => file,
-	    owner   => 'root',
-	    group   => 'root',
-	    mode    => '0644',
-	    content => template('tftp/tftpd-hpa.erb'),
-	    require => Package['tftpd-hpa'],
+    file { '/etc/default/tftpd-hpa':
+      ensure  => file,
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0644',
+      content => template('tftp/tftpd-hpa.erb'),
+      require => Package['tftpd-hpa'],
       notify  => Service['tftpd-hpa'],
-	  }
+    }
   }
 
   if $inetd {
-
     include 'xinetd'
 
     xinetd::service { 'tftp':
@@ -67,7 +67,8 @@ class tftp (
       flags       => 'IPv4',
       per_source  => '11',
       wait        => 'yes',
-  }
+    }
+
     $svc_ensure = stopped
     $svc_enable = false
   } else {

@@ -43,5 +43,4 @@ class tftp::params {
       warning("tftp:: $::operatingsystem may not be supported")
     }
   }
-
 }

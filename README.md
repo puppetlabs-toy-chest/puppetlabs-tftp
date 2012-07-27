@@ -17,7 +17,7 @@ Parameters:
 * address: bind address, default 0.0.0.0.
 * port: bind port, default 69.
 * options: service option, default --secure.
-* inetd: run service via xinetd - default true
+* inetd: run service via xinetd - default false.
 
 Example:
 
