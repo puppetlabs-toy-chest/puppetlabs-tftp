@@ -10,10 +10,10 @@ describe 'tftp', :type => :class do
       should contain_file('/etc/default/tftpd-hpa')
       should contain_package('tftpd-hpa')
       should contain_service('tftpd-hpa').with({
-       'ensure'    => 'running',
-       'enable'    => true,
-       'hasstatus' => false,
-       'provider'  => nil,
+        'ensure'    => 'running',
+        'enable'    => true,
+        'hasstatus' => false,
+        'provider'  => nil,
       })
     }
   end
@@ -28,9 +28,9 @@ describe 'tftp', :type => :class do
       should contain_file('/etc/default/tftpd-hpa')
       should contain_service('tftpd-hpa').with({
         'ensure'    => 'running',
-       'enable'    => true,
-       'hasstatus' => true,
-       'provider'  => 'upstart',
+        'enable'    => true,
+        'hasstatus' => true,
+        'provider'  => 'upstart',
       })
     }
   end
@@ -45,11 +45,11 @@ describe 'tftp', :type => :class do
     })
 
       should contain_service('tftpd-hpa').with({
-       'ensure'    => 'running',
-       'enable'    => 'true',
-       'hasstatus' => false,
-       'provider'  => 'base',
-       'start'     => '/usr/sbin/in.tftpd -l -a 0.0.0.0:69 -u nobody --secure /var/lib/tftpboot',
+        'ensure'    => 'running',
+        'enable'    => 'true',
+        'hasstatus' => false,
+        'provider'  => 'base',
+        'start'     => '/usr/sbin/in.tftpd -l -a 0.0.0.0:69 -u nobody --secure /var/lib/tftpboot',
       })
     }
   end
@@ -91,9 +91,8 @@ describe 'tftp', :type => :class do
       should contain_xinetd__service('tftp').with({
         'port'        => '69',
         'protocol'    => 'udp',
-        'server_args' => '--secure /var/lib/tftpboot',
+        'server_args' => '--secure -u nobody /var/lib/tftpboot',
         'server'      => '/usr/sbin/in.tftpd',
-        'user'        => 'nobody',
         'socket_type' => 'dgram',
         'cps'         => '100 2',
         'flags'       => 'IPv4',
@@ -116,9 +115,8 @@ describe 'tftp', :type => :class do
       should contain_xinetd__service('tftp').with({
         'port'        => '69',
         'protocol'    => 'udp',
-        'server_args' => '--secure /var/lib/tftpboot',
+        'server_args' => '--secure -u tftp /var/lib/tftpboot',
         'server'      => '/usr/sbin/in.tftpd',
-        'user'        => 'tftp',
         'socket_type' => 'dgram',
         'cps'         => '100 2',
         'flags'       => 'IPv4',
@@ -137,9 +135,8 @@ describe 'tftp', :type => :class do
       should contain_xinetd__service('tftp').with({
         'port'        => '69',
         'protocol'    => 'udp',
-        'server_args' => '--secure /srv/tftp',
+        'server_args' => '--secure -u tftp /srv/tftp',
         'server'      => '/usr/sbin/in.tftpd',
-        'user'        => 'tftp',
         'socket_type' => 'dgram',
         'cps'         => '100 2',
         'flags'       => 'IPv4',
@@ -160,9 +157,8 @@ describe 'tftp', :type => :class do
       should contain_xinetd__service('tftp').with({
         'port'        => '69',
         'protocol'    => 'udp',
-        'server_args' => '--secure --timeout 50 /srv/tftp',
+        'server_args' => '--secure --timeout 50 -u tftp /srv/tftp',
         'server'      => '/usr/sbin/in.tftpd',
-        'user'        => 'tftp',
         'socket_type' => 'dgram',
         'cps'         => '100 2',
         'flags'       => 'IPv4',
@@ -186,9 +182,8 @@ describe 'tftp', :type => :class do
       should contain_xinetd__service('tftp').with({
         'port'        => '1069',
         'protocol'    => 'udp',
-        'server_args' => '--secure /tftpboot',
+        'server_args' => '--secure -u root /tftpboot',
         'server'      => '/usr/sbin/in.tftpd',
-        'user'        => 'root',
         'socket_type' => 'dgram',
         'cps'         => '100 2',
         'flags'       => 'IPv4',
