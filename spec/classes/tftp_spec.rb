@@ -10,10 +10,10 @@ describe 'tftp', :type => :class do
       should contain_file('/etc/default/tftpd-hpa')
       should contain_package('tftpd-hpa')
       should contain_service('tftpd-hpa').with({
-       'ensure'    => 'running',
-       'enable'    => true,
-       'hasstatus' => false,
-       'provider'  => nil,
+        'ensure'    => 'running',
+        'enable'    => true,
+        'hasstatus' => false,
+        'provider'  => nil,
       })
     }
   end
@@ -28,9 +28,9 @@ describe 'tftp', :type => :class do
       should contain_file('/etc/default/tftpd-hpa')
       should contain_service('tftpd-hpa').with({
         'ensure'    => 'running',
-       'enable'    => true,
-       'hasstatus' => true,
-       'provider'  => 'upstart',
+        'enable'    => true,
+        'hasstatus' => true,
+        'provider'  => 'upstart',
       })
     }
   end
@@ -45,11 +45,11 @@ describe 'tftp', :type => :class do
     })
 
       should contain_service('tftpd-hpa').with({
-       'ensure'    => 'running',
-       'enable'    => 'true',
-       'hasstatus' => false,
-       'provider'  => 'base',
-       'start'     => '/usr/sbin/in.tftpd -l -a 0.0.0.0:69 -u nobody --secure /var/lib/tftpboot',
+        'ensure'    => 'running',
+        'enable'    => 'true',
+        'hasstatus' => false,
+        'provider'  => 'base',
+        'start'     => '/usr/sbin/in.tftpd -l -a 0.0.0.0:69 -u nobody --secure /var/lib/tftpboot',
       })
     }
   end
