@@ -60,8 +60,6 @@ class tftp (
       protocol    => 'udp',
       server_args => "${options} -u ${username} ${directory}",
       server      => $binary,
-      user        => 'root',
-      group       => 'root',
       bind        => $address,
       socket_type => 'dgram',
       cps         => '100 2',
