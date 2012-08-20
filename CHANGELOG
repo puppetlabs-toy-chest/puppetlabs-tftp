@@ -1,3 +1,7 @@
+0.2.1 2012-08-21 Puppet Labs <info@puppetlabs.com>
+
+* Fix permission issues related to xinetd
+
 0.2.0 2012-07-27 Puppet Labs <info@puppetlabs.com>
 
 * Add support for RHEL/CentOS
