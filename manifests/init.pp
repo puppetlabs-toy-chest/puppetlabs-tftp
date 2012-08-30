@@ -66,6 +66,7 @@ class tftp (
       flags       => 'IPv4',
       per_source  => '11',
       wait        => 'yes',
+      require     => Package[$package],
     }
 
     $svc_ensure = stopped
