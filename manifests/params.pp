@@ -4,7 +4,7 @@
 class tftp::params {
   $address    = '0.0.0.0'
   $port       = '69'
-  $options    = '--secure'
+  $options    = '--secure --pidfile=$PIDFILE'
   $binary     = '/usr/sbin/in.tftpd'
   $inetd      = true
 
