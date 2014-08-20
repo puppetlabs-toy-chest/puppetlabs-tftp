@@ -1,3 +1,7 @@
+0.2.2 2014-08-20
+
+* Add package require for the tftp xinetd::service
+
 0.2.1 2012-08-21 Puppet Labs <info@puppetlabs.com>
 
 * Fix permission issues related to xinetd
