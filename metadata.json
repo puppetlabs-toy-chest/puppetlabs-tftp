@@ -2,7 +2,7 @@
   "name": "puppetlabs-tftp",
   "version": "0.2.2",
   "author": "puppetlabs",
-  "summary": "Puppet Labs TFTP Module",
+  "summary": "Installs and manages TFTP service and configuration.",
   "license": "Apache 2.0",
   "source": "https://github.com/puppetlabs/puppetlabs-tftp",
   "project_page": "https://github.com/puppetlabs/puppetlabs-tftp",
