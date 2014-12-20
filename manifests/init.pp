@@ -34,8 +34,9 @@ class tftp (
   $binary     = $tftp::params::binary,
   $defaults   = $tftp::params::defaults
 ) inherits tftp::params {
+  $virtual_package = 'tftpd-hpa'
 
-  package { 'tftpd-hpa':
+  package { $virtual_package:
     ensure  => present,
     name    => $package,
   }
@@ -47,7 +48,7 @@ class tftp (
       group   => 'root',
       mode    => '0644',
       content => template('tftp/tftpd-hpa.erb'),
-      require => Package['tftpd-hpa'],
+      require => Package[$virtual_package],
       notify  => Service['tftpd-hpa'],
     }
   }
@@ -66,7 +67,7 @@ class tftp (
       flags       => 'IPv4',
       per_source  => '11',
       wait        => 'yes',
-      require     => Package[$package],
+      require     => Package[$virtual_package],
     }
 
     $svc_ensure = stopped
