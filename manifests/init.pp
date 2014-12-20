@@ -33,7 +33,8 @@ class tftp (
   $package    = $tftp::params::package,
   $binary     = $tftp::params::binary,
   $defaults   = $tftp::params::defaults
-) inherits tftp::params {
+) {
+  include tftp::params
 
   package { 'tftpd-hpa':
     ensure  => present,

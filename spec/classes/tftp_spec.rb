@@ -83,7 +83,7 @@ describe 'tftp', :type => :class do
     let (:facts) { {  :osfamily => 'Redhat',
                       :path     => '/usr/local/bin:/usr/bin:/bin', } }
     it {
-      should include_class('xinetd')
+      should contain_class('xinetd')
       should contain_service('tftpd-hpa').with({
         'ensure'      => 'stopped',
         'enable'      => false,
@@ -107,7 +107,7 @@ describe 'tftp', :type => :class do
                       :operatingsystem  => 'Ubuntu',
                       :path     => '/usr/local/bin:/usr/bin:/bin', } }
     it {
-      should include_class('xinetd')
+      should contain_class('xinetd')
       should contain_service('tftpd-hpa').with({
         'ensure'      => 'stopped',
         'enable'      => false,
@@ -131,7 +131,7 @@ describe 'tftp', :type => :class do
                       :operatingsystem  => 'Debian',
                       :path     => '/usr/local/bin:/usr/bin:/bin', } }
     it {
-      should include_class('xinetd')
+      should contain_class('xinetd')
       should contain_xinetd__service('tftp').with({
         'port'        => '69',
         'protocol'    => 'udp',
@@ -153,7 +153,7 @@ describe 'tftp', :type => :class do
                       :path     => '/usr/local/bin:/usr/bin:/bin', } }
     let (:params) { { :options  => '--secure --timeout 50', } }
     it {
-      should include_class('xinetd')
+      should contain_class('xinetd')
       should contain_xinetd__service('tftp').with({
         'port'        => '69',
         'protocol'    => 'udp',
@@ -178,7 +178,7 @@ describe 'tftp', :type => :class do
                       :username   => 'root',
                       :directory  => '/tftpboot', } }
     it {
-      should include_class('xinetd')
+      should contain_class('xinetd')
       should contain_xinetd__service('tftp').with({
         'port'        => '1069',
         'protocol'    => 'udp',

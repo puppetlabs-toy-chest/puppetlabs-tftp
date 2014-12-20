@@ -24,6 +24,9 @@ class tftp::params {
           $hasstatus  = true
           $provider   = 'upstart'
         }
+        default: {
+          fail "${::operatingsystem} is not supported"
+        }
       }
     }
     'redhat': {
@@ -40,7 +43,7 @@ class tftp::params {
       $defaults   = false
       $hasstatus  = false
       $provider   = undef
-      warning("tftp:: $::operatingsystem may not be supported")
+      warning("tftp:: ${::operatingsystem} may not be supported")
     }
   }
 }
