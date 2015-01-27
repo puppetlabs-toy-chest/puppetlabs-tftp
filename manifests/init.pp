@@ -32,13 +32,13 @@ class tftp (
   $inetd      = $tftp::params::inetd,
   $package    = $tftp::params::package,
   $binary     = $tftp::params::binary,
-  $defaults   = $tftp::params::defaults
+  $defaults   = $tftp::params::defaults,
 ) inherits tftp::params {
   $virtual_package = 'tftpd-hpa'
 
   package { $virtual_package:
-    ensure  => present,
-    name    => $package,
+    ensure => present,
+    name   => $package,
   }
 
   if $defaults {
@@ -77,7 +77,7 @@ class tftp (
     $svc_enable = true
   }
 
-  $start = $provider ? {
+  $start = $tftp::params::provider ? {
     'base'  => "${binary} -l -a ${address}:${port} -u ${username} ${options} ${directory}",
     default => undef
   }
