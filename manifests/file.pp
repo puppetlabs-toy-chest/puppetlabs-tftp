@@ -57,12 +57,14 @@ define tftp::file (
   if $source {
     $source_real = $source
   } elsif $ensure != 'directory' and ! $content {
-    if $caller_module_name {
+    if $caller_module_name and $caller_module_name != '' {
       $mod = $caller_module_name
     } else {
       $mod = $module_name
     }
     $source_real = "puppet:///modules/${mod}/${name}"
+  } else {
+    $source_real = undef
   }
 
   file { "${tftp::directory}/${name}":
