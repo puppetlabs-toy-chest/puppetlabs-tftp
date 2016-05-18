@@ -18,6 +18,7 @@ Parameters:
 * port: bind port, default 69.
 * options: service option, default --secure.
 * inetd: run service via xinetd, default true.
+* files: hash of tftp::file resources to create, default undef.
 
 Example:
 

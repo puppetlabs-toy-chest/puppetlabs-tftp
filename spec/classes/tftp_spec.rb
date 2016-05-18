@@ -194,4 +194,17 @@ describe 'tftp', :type => :class do
     }
   end
 
+  describe 'when deploying a file from init.pp (on redhat)' do
+    let(:facts) { { :operatingsystem => 'RedHat',
+                    :osfamily        => 'redhat',
+                    :path            => '/usr/local/bin:/usr/bin:/bin', } }
+    let (:params) { { 'files' => { 'sample' => { 'content' => 'hi' }} } }
+
+    it {
+      should contain_file('/var/lib/tftpboot/sample').with({
+        'content' => 'hi',
+      })
+    }
+  end
+
 end
