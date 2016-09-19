@@ -22,7 +22,11 @@ class tftp::params {
         'ubuntu': {
           $directory  = '/var/lib/tftpboot'
           $hasstatus  = true
-          $provider   = 'upstart'
+          if (versioncmp($::lsbdistrelease, '16.04') >= 0) {
+            $provider = undef
+          } else {
+            $provider = 'upstart'
+          }
         }
         default: {
           fail "${::operatingsystem} is not supported"
