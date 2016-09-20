@@ -157,10 +157,11 @@ describe 'tftp', :type => :class do
     }
   end
 
-  describe 'when deploying with xinetd on ubuntu' do
-    let (:facts) { {  :osfamily         => 'Debian',
-                      :operatingsystem  => 'Ubuntu',
-                      :path     => '/usr/local/bin:/usr/bin:/bin', } }
+  describe 'when deploying with xinetd on ubuntu 14.04' do
+    let (:facts) { {  :osfamily               => 'Debian',
+                      :operatingsystem        => 'Ubuntu',
+                      :operatingsystemrelease => '14.04',
+                      :path                   => '/usr/local/bin:/usr/bin:/bin', } }
     it {
       should contain_class('xinetd')
       should contain_service('tftpd-hpa').with({
