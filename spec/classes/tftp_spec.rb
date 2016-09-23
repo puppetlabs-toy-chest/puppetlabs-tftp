@@ -18,10 +18,11 @@ describe 'tftp', :type => :class do
     }
   end
 
-  describe 'when deploying on ubuntu as standalone' do
-    let(:facts) { { :operatingsystem  => 'Ubuntu',
-                    :osfamily         => 'Debian',
-                    :path             => '/usr/local/bin:/usr/bin:/bin', } }
+  describe 'when deploying on ubuntu 14.04 as standalone' do
+    let(:facts) { { :operatingsystem        => 'Ubuntu',
+                    :osfamily               => 'Debian',
+                    :operatingsystemrelease => '14.04',
+                    :path                   => '/usr/local/bin:/usr/bin:/bin', } }
     let(:params) { {  :inetd  => false, } }
     it {
       should contain_package('tftpd-hpa')
@@ -31,6 +32,60 @@ describe 'tftp', :type => :class do
         'enable'    => true,
         'hasstatus' => true,
         'provider'  => 'upstart',
+      })
+    }
+  end
+
+  describe 'when deploying on ubuntu 14.10 as standalone' do
+    let(:facts) { { :operatingsystem        => 'Ubuntu',
+                    :osfamily               => 'Debian',
+                    :operatingsystemrelease => '14.10',
+                    :path                   => '/usr/local/bin:/usr/bin:/bin', } }
+    let(:params) { {  :inetd  => false, } }
+    it {
+      should contain_package('tftpd-hpa')
+      should contain_file('/etc/default/tftpd-hpa')
+      should contain_service('tftpd-hpa').with({
+        'ensure'    => 'running',
+        'enable'    => true,
+        'hasstatus' => true,
+        'provider'  => 'upstart',
+      })
+    }
+  end
+
+  describe 'when deploying on ubuntu 15.04 or greater as standalone' do
+    let(:facts) { { :operatingsystem        => 'Ubuntu',
+                    :osfamily               => 'Debian',
+                    :operatingsystemrelease => '15.04',
+                    :path                   => '/usr/local/bin:/usr/bin:/bin', } }
+    let(:params) { {  :inetd  => false, } }
+    it {
+      should contain_package('tftpd-hpa')
+      should contain_file('/etc/default/tftpd-hpa')
+      should contain_service('tftpd-hpa').with({
+        'ensure'    => 'running',
+        'enable'    => true,
+        'hasstatus' => true,
+        'provider'  => 'systemd',
+      })
+    }
+  end
+
+  describe 'when deploying on ubuntu 16.04 or greater as standalone' do
+    let(:facts) { { :operatingsystem        => 'Ubuntu',
+                    :osfamily               => 'Debian',
+                    :operatingsystemrelease => '16.04',
+                    :path                   => '/usr/local/bin:/usr/bin:/bin', } }
+    let(:params) { {  :inetd  => false, } }
+    it {
+      should contain_package('tftpd-hpa')
+      should contain_file('/etc/default/tftpd-hpa')
+      should contain_service('tftpd-hpa').with({
+        'ensure'    => 'running',
+        'enable'    => true,
+        'hasstatus' => true,
+        'provider'  => 'systemd',
       })
     }
   end
@@ -102,10 +157,11 @@ describe 'tftp', :type => :class do
     }
   end
 
-  describe 'when deploying with xinetd on ubuntu' do
-    let (:facts) { {  :osfamily         => 'Debian',
-                      :operatingsystem  => 'Ubuntu',
-                      :path     => '/usr/local/bin:/usr/bin:/bin', } }
+  describe 'when deploying with xinetd on ubuntu 14.04' do
+    let (:facts) { {  :osfamily               => 'Debian',
+                      :operatingsystem        => 'Ubuntu',
+                      :operatingsystemrelease => '14.04',
+                      :path                   => '/usr/local/bin:/usr/bin:/bin', } }
     it {
       should contain_class('xinetd')
       should contain_service('tftpd-hpa').with({

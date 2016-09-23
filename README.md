@@ -88,5 +88,5 @@ The examples use a module acme and the tftp files should be placed in calling mo
 The module have been tested on the following operating systems. Testing and patches for other platforms are welcomed.
 
 * Debian Wheezy
-* Ubuntu Oneiric
+* Ubuntu 12.04, 14.04, 16.04
 * CentOS

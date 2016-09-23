@@ -21,10 +21,11 @@ describe 'tftp::file' do
     }
   end
 
-  describe 'when deploying on ubuntu' do
-    let(:facts) { { :operatingsystem => 'ubuntu',
-                    :osfamily        => 'Debian',
-                    :path            => '/usr/local/bin:/usr/bin:/bin', } }
+  describe 'when deploying on ubuntu 14.04' do
+    let(:facts) { { :operatingsystem        => 'ubuntu',
+                    :osfamily               => 'Debian',
+                    :operatingsystemrelease => '14.04',
+                    :path                   => '/usr/local/bin:/usr/bin:/bin', } }
 
     it {
       should contain_class('tftp')
