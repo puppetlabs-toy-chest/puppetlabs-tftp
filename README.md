@@ -81,7 +81,7 @@ Example:
       source => 'puppet:///modules/acme/pxelinux.0',
     }
 
-The examples use a module acme and the tftp files should be placed in calling module path i.e. (/etc/puppet/modules/acme/files).
+The examples use a module acme and the tftp files should be placed relative to the `files` directory of the calling module, i.e. ($modulepath/acme/files/).
 
 ## Supported Platforms
 
