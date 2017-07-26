@@ -85,8 +85,11 @@ The examples use a module acme and the tftp files should be placed relative to t
 
 ## Supported Platforms
 
-The module have been tested on the following operating systems. Testing and patches for other platforms are welcomed.
+The module have been tested on the following platforms. Testing and patches for other platforms are welcomed.
 
-* Debian Wheezy
-* Ubuntu 12.04, 14.04, 16.04
-* CentOS
+* Debian 7 (Wheezy)
+* EL 5
+* EL 6
+* Ubuntu 12.04
+* Ubuntu 14.04
+* Ubuntu 16.04
