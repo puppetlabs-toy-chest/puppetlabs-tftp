@@ -21,11 +21,13 @@ Parameters:
 
 Example:
 
-    class tftp {
-      directory => '/opt/tftp',
-      address   => $::ipaddress,
-      options   => '--ipv6 --timeout 60',
-    }
+```puppet
+class tftp {
+  directory => '/opt/tftp',
+  address   => $::ipaddress,
+  options   => '--ipv6 --timeout 60',
+}
+```
 
 ### tftp::file
 
@@ -44,22 +46,26 @@ Parameters:
 
 Example:
 
-    tftp::file { 'pxelinux.0':
-      source => 'puppet:///modules/acme/pxelinux.0',
-    }
-    
-    tftp::file { 'pxelinux.cfg':
-      ensure => directory,
-    }
-    
-    tftp::file { 'pxelinux.cfg/default':
-      ensure => file,
-      source => 'puppet:///modules/acme/pxelinux.cfg/default',
-    }
+```puppet
+tftp::file { 'pxelinux.0':
+  source => 'puppet:///modules/acme/pxelinux.0',
+}
+
+tftp::file { 'pxelinux.cfg':
+  ensure => directory,
+}
+
+tftp::file { 'pxelinux.cfg/default':
+  ensure => file,
+  source => 'puppet:///modules/acme/pxelinux.cfg/default',
+}
+```
 
 The last example can be abbreviated to the following if it's in the acme module:
 
-    tftp::file { 'pxelinux.cfg/default': }
+```puppet
+tftp::file { 'pxelinux.cfg/default': }
+```
 
 ## Example
 
@@ -68,24 +74,26 @@ The last example can be abbreviated to the following if it's in the acme module:
 
 Example:
 
-    file { '/opt/tftp':
-      ensure => directory,
-    }
-    
-    class { 'tftp':
-      directory => '/opt/tftp',
-      address   => $::ipaddress,
-    }
-    
-    tftp::file { 'pxelinux.0':
-      source => 'puppet:///modules/acme/pxelinux.0',
-    }
+```puppet
+file { '/opt/tftp':
+  ensure => directory,
+}
+
+class { 'tftp':
+  directory => '/opt/tftp',
+  address   => $::ipaddress,
+}
+
+tftp::file { 'pxelinux.0':
+  source => 'puppet:///modules/acme/pxelinux.0',
+}
+```
 
 The examples use a module acme and the tftp files should be placed relative to the `files` directory of the calling module, i.e. ($modulepath/acme/files/).
 
 ## Supported Platforms
 
-The module have been tested on the following platforms. Testing and patches for other platforms are welcomed.
+The module has been tested on the following platforms. Testing and patches for other platforms are welcomed.
 
 * Debian 7 (Wheezy)
 * EL 5
