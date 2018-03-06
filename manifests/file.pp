@@ -39,8 +39,8 @@ define tftp::file (
   $content      = undef,
   $source       = undef
 ) {
-  include 'tftp'
-  include 'tftp::params'
+  include '::tftp'
+  include '::tftp::params'
 
   if $owner {
     $tftp_owner = $owner
