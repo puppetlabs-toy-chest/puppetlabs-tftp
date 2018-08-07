@@ -1,3 +1,3 @@
-class { 'tftp':
+class { '::tftp':
   address => $::ipaddress,
 }
