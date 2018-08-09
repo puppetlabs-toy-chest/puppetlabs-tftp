@@ -14,10 +14,15 @@ Parameters:
 
 * username: tftp daemon user, default tftp(debian) or nobody(redhat).
 * directory: service directory, deafult see params class.
-* address: bind address, default 0.0.0.0.
+* address: bind address for IPv4, default 0.0.0.0.
+* address_ipv6: address to bind to for ipv6, default ::
 * port: bind port, default 69.
 * options: service option, default --secure.
 * inetd: run service via xinetd, default true.
+* inetd_instances: number of servers to run. Default: unset (unlimited)
+* inetd_ipv4: enable ipv4, default true
+* inetd_ipv6: enable ipv6, default false
+* inetd_user: user to run xinetd, default "root"
 
 Example:
 
@@ -25,7 +30,19 @@ Example:
 class tftp {
   directory => '/opt/tftp',
   address   => $::ipaddress,
-  options   => '--ipv6 --timeout 60',
+  options   => '--timeout 60',
+}
+```
+
+Run tftp via inetd and listen both to IPv4 and IPv6
+```puppet
+class tftp {
+  directory       => '/opt/tftp',
+  options         => '--timeout 60 --verbose --secure',
+  inetd           => true,
+  inetd_instances => '300',
+  inetd_ipv6      => true,
+  username        => 'nobody',
 }
 ```
 
@@ -98,6 +115,7 @@ The module has been tested on the following platforms. Testing and patches for o
 * Debian 7 (Wheezy)
 * EL 5
 * EL 6
+* EL 7
 * Ubuntu 12.04
 * Ubuntu 14.04
 * Ubuntu 16.04

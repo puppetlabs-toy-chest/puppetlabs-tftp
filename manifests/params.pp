@@ -2,11 +2,16 @@
 #
 #   TFTP class parameters.
 class tftp::params {
-  $address    = '0.0.0.0'
-  $port       = '69'
-  $options    = '--secure'
-  $binary     = '/usr/sbin/in.tftpd'
-  $inetd      = true
+  $address         = '0.0.0.0'
+  $address_ipv6    = '::'
+  $port            = '69'
+  $options         = '--secure'
+  $binary          = '/usr/sbin/in.tftpd'
+  $inetd           = true
+  $inetd_instances = undef
+  $inetd_ipv4      = true
+  $inetd_ipv6      = false
+  $inetd_user      = 'root'
 
   case $::osfamily {
     'debian': {

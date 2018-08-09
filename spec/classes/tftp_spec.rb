@@ -250,4 +250,45 @@ describe 'tftp', :type => :class do
     }
   end
 
+  describe 'when deploying for Redhat with xinetd with custom settings' do
+    let (:facts) { {  :osfamily => 'Redhat',
+                      :path     => '/usr/local/bin:/usr/bin:/bin', } }
+    let (:params) { { :port            => 1069,
+                      :address         => '127.0.0.1',
+                      :address_ipv6    => '::1',
+                      :inetd_ipv6      => true,
+                      :inetd_instances => 300,
+                      :username        => 'nobody',
+                      :directory       => '/tftpboot', } }
+    it {
+      should contain_class('xinetd')
+      should contain_xinetd__service('tftp').with({
+        'port'        => '1069',
+        'protocol'    => 'udp',
+        'server_args' => '--secure -u nobody /tftpboot',
+        'server'      => '/usr/sbin/in.tftpd',
+        'socket_type' => 'dgram',
+        'cps'         => '100 2',
+        'flags'       => 'IPv4',
+        'per_source'   => '11',
+        'wait'        => 'yes',
+        'bind'        => '127.0.0.1',
+        'instances'   => '300',
+      })
+      should contain_xinetd__service('tftp-ipv6').with({
+        'port'        => '1069',
+        'protocol'    => 'udp',
+        'server_args' => '--secure -u nobody /tftpboot',
+        'server'      => '/usr/sbin/in.tftpd',
+        'socket_type' => 'dgram',
+        'cps'         => '100 2',
+        'flags'       => 'IPv6',
+        'per_source'  => '11',
+        'wait'        => 'yes',
+        'bind'        => '::1',
+        'instances'   => '300',
+      })
+    }
+  end
+
 end
