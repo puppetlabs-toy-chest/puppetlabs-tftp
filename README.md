@@ -18,6 +18,8 @@ Parameters:
 * port: bind port, default 69.
 * options: service option, default --secure.
 * inetd: run service via xinetd, default true.
+* ensure: ensure service state (running)
+* enable: define whether the service should start at boot (true)
 
 Example:
 

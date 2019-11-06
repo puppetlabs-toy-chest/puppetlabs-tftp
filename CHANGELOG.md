@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [1.0.1]
+### Changed
+- tftp class parameters signature to include ensure and enable as parameters.
+
 ## [1.0.0]
 ### Added
 - Add puppet 4 and 5

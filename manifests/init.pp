@@ -8,6 +8,8 @@
 #   [*port*]: tftp service bind port (default 69).
 #   [*options*]: tftp service bind port (default 69).
 #   [*inetd*]: Run as an xinetd service instead of standalone daemon (false)
+#   [*ensure*]: Ensure service state (running)
+#   [*enable*]: Define whether the service should start at boot (true)
 #
 # Actions:
 #
@@ -18,9 +20,11 @@
 # Usage:
 #
 #   class { 'tftp':
-#     directory => '/opt/tftp',
-#     address   => $::ipaddress,
-#     options   => '--ipv6 --timeout 60',
+#     directory  => '/opt/tftp',
+#     address    => $::ipaddress,
+#     options    => '--ipv6 --timeout 60',
+#     ensure     => running,
+#     enable     => true,
 #   }
 #
 class tftp (
@@ -30,6 +34,8 @@ class tftp (
   $port       = $tftp::params::port,
   $options    = $tftp::params::options,
   $inetd      = $tftp::params::inetd,
+  $ensure     = $tftp::params::ensure,
+  $enable     = $tftp::params::enable,
   $package    = $tftp::params::package,
   $binary     = $tftp::params::binary,
   $defaults   = $tftp::params::defaults,
@@ -73,8 +79,8 @@ class tftp (
     $svc_ensure = stopped
     $svc_enable = false
   } else {
-    $svc_ensure = running
-    $svc_enable = true
+    $svc_ensure = $ensure
+    $svc_enable = $enable
   }
 
   $start = $tftp::params::provider ? {

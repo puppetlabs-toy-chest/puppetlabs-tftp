@@ -7,6 +7,8 @@ class tftp::params {
   $options    = '--secure'
   $binary     = '/usr/sbin/in.tftpd'
   $inetd      = true
+  $ensure     = running
+  $enable     = true
 
   case $::osfamily {
     'debian': {
