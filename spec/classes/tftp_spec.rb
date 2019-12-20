@@ -1,11 +1,11 @@
 require 'spec_helper'
 describe 'tftp', :type => :class do
 
-  describe 'when deploying on debian as standalone' do
+  describe 'when deploying on debian as standalone with default params' do
     let(:facts) { { :operatingsystem  => 'Debian',
                     :osfamily         => 'Debian',
                     :path             => '/usr/local/bin:/usr/bin:/bin', } }
-    let(:params) { {  :inetd  => false, } }
+    let(:params) { {  :inetd  => false } }
     it {
       should contain_file('/etc/default/tftpd-hpa')
       should contain_package('tftpd-hpa')
@@ -18,7 +18,28 @@ describe 'tftp', :type => :class do
     }
   end
 
-  describe 'when deploying on ubuntu 14.04 as standalone' do
+
+  describe 'when deploying on debian as standalone with service disabled' do
+    let(:facts) { { :operatingsystem  => 'Debian',
+                    :osfamily         => 'Debian',
+                    :path             => '/usr/local/bin:/usr/bin:/bin', } }
+
+    let(:params) { {  :inetd  => false, :enable => false, :ensure => 'stopped',} }
+    it {
+      should contain_file('/etc/default/tftpd-hpa')
+      should contain_package('tftpd-hpa')
+      should contain_service('tftpd-hpa').with({
+        'ensure'    => 'stopped',
+        'enable'    => false,
+        'hasstatus' => false,
+        'provider'  => nil,
+      })
+    }
+  end
+
+
+
+  describe 'when deploying on ubuntu 14.04 as standalone with default params' do
     let(:facts) { { :operatingsystem        => 'Ubuntu',
                     :osfamily               => 'Debian',
                     :operatingsystemrelease => '14.04',
@@ -36,7 +57,25 @@ describe 'tftp', :type => :class do
     }
   end
 
-  describe 'when deploying on ubuntu 14.10 as standalone' do
+  describe 'when deploying on ubuntu 14.04 as standalone with service disabled' do
+    let(:facts) { { :operatingsystem        => 'Ubuntu',
+                    :osfamily               => 'Debian',
+                    :operatingsystemrelease => '14.04',
+                    :path                   => '/usr/local/bin:/usr/bin:/bin', } }
+    let(:params) { {  :inetd  => false, :ensure => 'stopped', :enable => false,} }
+    it {
+      should contain_package('tftpd-hpa')
+      should contain_file('/etc/default/tftpd-hpa')
+      should contain_service('tftpd-hpa').with({
+        'ensure'    => 'stopped',
+        'enable'    => false,
+        'hasstatus' => true,
+        'provider'  => 'upstart',
+      })
+    }
+  end
+
+  describe 'when deploying on ubuntu 14.10 as standalone with default params' do
     let(:facts) { { :operatingsystem        => 'Ubuntu',
                     :osfamily               => 'Debian',
                     :operatingsystemrelease => '14.10',
@@ -54,7 +93,25 @@ describe 'tftp', :type => :class do
     }
   end
 
-  describe 'when deploying on ubuntu 15.04 or greater as standalone' do
+  describe 'when deploying on ubuntu 14.10 as standalone with service disabled' do
+    let(:facts) { { :operatingsystem        => 'Ubuntu',
+                    :osfamily               => 'Debian',
+                    :operatingsystemrelease => '14.10',
+                    :path                   => '/usr/local/bin:/usr/bin:/bin', } }
+    let(:params) { {  :inetd  => false, :ensure => 'stopped', :enable => false, } }
+    it {
+      should contain_package('tftpd-hpa')
+      should contain_file('/etc/default/tftpd-hpa')
+      should contain_service('tftpd-hpa').with({
+        'ensure'    => 'stopped',
+        'enable'    => false,
+        'hasstatus' => true,
+        'provider'  => 'upstart',
+      })
+    }
+  end
+
+  describe 'when deploying on ubuntu 15.04 or greater as standalone with default params' do
     let(:facts) { { :operatingsystem        => 'Ubuntu',
                     :osfamily               => 'Debian',
                     :operatingsystemrelease => '15.04',
@@ -72,7 +129,25 @@ describe 'tftp', :type => :class do
     }
   end
 
-  describe 'when deploying on ubuntu 16.04 or greater as standalone' do
+  describe 'when deploying on ubuntu 15.04 or greater as standalone with service disabled' do
+    let(:facts) { { :operatingsystem        => 'Ubuntu',
+                    :osfamily               => 'Debian',
+                    :operatingsystemrelease => '15.04',
+                    :path                   => '/usr/local/bin:/usr/bin:/bin', } }
+    let(:params) { {  :inetd  => false, :ensure => 'stopped', :enable => false, } }
+    it {
+      should contain_package('tftpd-hpa')
+      should contain_file('/etc/default/tftpd-hpa')
+      should contain_service('tftpd-hpa').with({
+        'ensure'    => 'stopped',
+        'enable'    => false,
+        'hasstatus' => true,
+        'provider'  => 'systemd',
+      })
+    }
+  end
+
+  describe 'when deploying on ubuntu 16.04 or greater as standalone with default params' do
     let(:facts) { { :operatingsystem        => 'Ubuntu',
                     :osfamily               => 'Debian',
                     :operatingsystemrelease => '16.04',
@@ -84,6 +159,24 @@ describe 'tftp', :type => :class do
       should contain_service('tftpd-hpa').with({
         'ensure'    => 'running',
         'enable'    => true,
+        'hasstatus' => true,
+        'provider'  => 'systemd',
+      })
+    }
+  end
+
+  describe 'when deploying on ubuntu 16.04 or greater as standalone with service disabled' do
+    let(:facts) { { :operatingsystem        => 'Ubuntu',
+                    :osfamily               => 'Debian',
+                    :operatingsystemrelease => '16.04',
+                    :path                   => '/usr/local/bin:/usr/bin:/bin', } }
+    let(:params) { {  :inetd  => false, :ensure => 'stopped', :enable => false, } }
+    it {
+      should contain_package('tftpd-hpa')
+      should contain_file('/etc/default/tftpd-hpa')
+      should contain_service('tftpd-hpa').with({
+        'ensure'    => 'stopped',
+        'enable'    => false,
         'hasstatus' => true,
         'provider'  => 'systemd',
       })
@@ -102,6 +195,25 @@ describe 'tftp', :type => :class do
       should contain_service('tftpd-hpa').with({
         'ensure'    => 'running',
         'enable'    => 'true',
+        'hasstatus' => false,
+        'provider'  => 'base',
+        'start'     => '/usr/sbin/in.tftpd -l -a 0.0.0.0:69 -u nobody --secure /var/lib/tftpboot',
+      })
+    }
+  end
+
+  describe 'when deploying on redhat family as standalone with service disabled' do
+    let (:facts) { {  :osfamily         => 'RedHat',
+                      :path             => '/usr/local/bin:/usr/bin:/bin', } }
+    let(:params) { {  :inetd  => false, :ensure => 'stopped', :enable => false, } }
+    it {
+      should contain_package('tftpd-hpa').with({
+        'name'      => 'tftp-server',
+    })
+
+      should contain_service('tftpd-hpa').with({
+        'ensure'    => 'stopped',
+        'enable'    => 'false',
         'hasstatus' => false,
         'provider'  => 'base',
         'start'     => '/usr/sbin/in.tftpd -l -a 0.0.0.0:69 -u nobody --secure /var/lib/tftpboot',
