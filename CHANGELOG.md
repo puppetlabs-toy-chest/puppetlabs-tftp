@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## 2018-08-08 - Release 1.0.1
+### Summary
+Improve support for running tftp over IPv6
+
+### Added
+- introduce new parameters address_ipv6, inetd_ipv4, inetd_ipv6, inetd_user, inetd_instances
+- additional test for dual stack configuration
+
+### Fixed
+- rubocop configuration
+
 ## [1.0.0]
 ### Added
 - Add puppet 4 and 5
