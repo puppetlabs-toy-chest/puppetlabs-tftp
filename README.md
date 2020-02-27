@@ -22,7 +22,7 @@ Parameters:
 Example:
 
 ```puppet
-class tftp {
+class '::tftp': {
   directory => '/opt/tftp',
   address   => $::ipaddress,
   options   => '--ipv6 --timeout 60',
@@ -79,7 +79,7 @@ file { '/opt/tftp':
   ensure => directory,
 }
 
-class { 'tftp':
+class { '::tftp':
   directory => '/opt/tftp',
   address   => $::ipaddress,
 }
