@@ -54,7 +54,7 @@ class tftp (
   }
 
   if $inetd {
-    include 'xinetd'
+    include ::xinetd
 
     xinetd::service { 'tftp':
       port        => $port,
