@@ -8,6 +8,7 @@
 #   [*port*]: tftp service bind port (default 69).
 #   [*options*]: tftp service bind port (default 69).
 #   [*inetd*]: Run as an xinetd service instead of standalone daemon (false)
+#   [*files*]: hash of tftp::file resources to create (undef)
 #
 # Actions:
 #
@@ -33,6 +34,7 @@ class tftp (
   $package    = $tftp::params::package,
   $binary     = $tftp::params::binary,
   $defaults   = $tftp::params::defaults,
+  $files      = $tftp::params::files,
 ) inherits tftp::params {
   $virtual_package = 'tftpd-hpa'
 
@@ -89,5 +91,9 @@ class tftp (
     hasstatus => $tftp::params::hasstatus,
     pattern   => '/usr/sbin/in.tftpd',
     start     => $start,
+  }
+
+  if $files {
+    create_resources('tftp::file', $files)
   }
 }
